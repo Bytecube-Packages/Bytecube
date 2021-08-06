@@ -58,8 +58,9 @@ void detach(const char* name) {
 
 int main(int argc, char** argv) {
   if (argc < 2) return 1;
-  
-  string volume = attach(argv[1]);
+
+  string file = regex_replace(argv[1], regex("\\s"), "\\ ");
+  string volume = attach(file.c_str());
   copy(volume.c_str());
   detach(volume.c_str());
 }
