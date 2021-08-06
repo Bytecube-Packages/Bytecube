@@ -4,7 +4,10 @@ import glob from 'glob';
 
 export enum METHOD {
     GET = 'get',
-    POST = 'post'
+    POST = 'post',
+    PUT = 'put',
+    PATCH = 'patch',
+    DELETE = 'delete'
 }
 
 export interface RouteConfigProps {
@@ -19,9 +22,14 @@ export function routeConfig({method, path}: RouteConfigProps): MethodDecorator {
         descriptor: PropertyDescriptor
     ) {
         const response = (req: Request, res: Response) => {
-            const original = descriptor.value(req, res);
-
-            res.status(200).json(original);
+            try {
+                const original = descriptor.value(req, res);
+                res.status(200).json(original);
+            } catch (e) {
+                res.status(500).json({
+                    error: e.message
+                });
+            }
         }
 
         server.app[method](path, response);
