@@ -1,3 +1,2 @@
-deps
-_build
-.elixir_ls
+node_modules
+out
