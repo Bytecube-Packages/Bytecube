@@ -48,6 +48,10 @@ namespace Command {
         }
 
         set_bold(true);
+
+        int len = to_string(procent).length();
+        for (int i = 0; i < (3 - len); i++) cout << " ";
+
         cout << " " << procent << "%" << flush;
       }
   };

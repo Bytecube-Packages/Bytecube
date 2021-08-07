@@ -17,49 +17,44 @@ string al_encode(const string &value) {
 }
 
 void download_percentages(const char* cmd, void (*progress)(int)) {
+  (*progress)(0);
+
   array<char, 32> buffer;
-  string result = "";
   bool str = true;
+  bool new_line = true;
   int p = 0;
 
-  string t = "";
-
   unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-  if (!pipe) {
-    throw runtime_error("popen() failed!");
-  }
+  if (!pipe) throw runtime_error("popen() failed!");
+  
   while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
     string current = buffer.data();
-    result += current;
 
     for (int i = 0; i < current.size(); i++) {
       char c = current[i];
 
-      // cout << int(c) << " " << (int(c) == 13) << endl;
-
       if (int(c) == 13) {
-        cout << t << endl;
-        cout << "This is: " << 13 << endl;
-        // (*progress)(p);
+        (*progress)(p);
+
+        new_line = true;
         str = true;
         p = 0;
-        t = "";
         continue;
       }
-      if (int(c) == 32 && str) continue;
-      if (!isdigit(c)) {
-        //(*progress)(p);
-        // cout << p << endl;
-        break;
+
+      if (!new_line) continue;
+
+      if (c == ' ' && str) continue;
+      if (c == ' ') new_line = false;
+
+      if (isdigit(c)) {
+        str = false;
+        p = p * 10 + int(c) - '0';
       }
-
-      t += c;
-
-      // str = false;
-      // p = p * 10 + (c - '0');
     }
   }
-  // cout << al_encode(result) << endl;
+
+  (*progress)(100);
 }
 
 namespace Installer {
