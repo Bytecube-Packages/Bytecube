@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "../installers/macos/dmg/download.cpp"
+#include "../installers/macos/dmg/unpackage.cpp"
 
 using namespace std;
 
@@ -35,5 +36,16 @@ namespace Installer {
       cerr << error << endl;
       return false;
     }
+  }
+
+  bool installPackage(string platform, string package, void (*progress)(int)) {
+    if (fetchPackage(platform, package, progress)) {
+      if (platform == "macos") {
+        Macos::Dmg::unpackage();
+        return true;
+      }
+    }
+
+    return false;
   }
 }

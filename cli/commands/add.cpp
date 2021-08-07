@@ -20,7 +20,7 @@ namespace Command {
 
         // actually install the package
         display_progress(0);
-        Installer::fetchPackage("macos", package, display_progress);
+        Installer::installPackage("macos", package, display_progress);
 
         cout << endl;
 

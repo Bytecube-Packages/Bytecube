@@ -7,60 +7,61 @@
 #include <array>
 #include <regex>
 
+#include "../../../util/exec.cpp"
+
 using namespace std;
 
-string exec(const char* cmd) {
-    array<char, 128> buffer;
-    string result;
-    unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-    if (!pipe) {
-        throw runtime_error("popen() failed!");
+namespace Util {
+  namespace Dmg {
+    string attach(const char* name) {
+      string start = "hdiutil attach -nobrowse";
+
+      string command = start + " " + name;
+      string volume = exec(command.c_str());
+
+      string r = "\\/Volumes\\/(\\s?\\w+)*";
+      smatch m;
+      regex_search(volume, m, regex(r));
+      
+      return regex_replace(m.str(), regex("\\s"), "\\ ");
     }
-    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-        result += buffer.data();
+
+    void copy(const char* name) {
+      string start = "cp -rf ";
+      string end = "/*.app /Applications";
+
+      string command = start + name + end;
+      exec(command.c_str());
     }
-    return result;
+
+    void detach(const char* name) {
+      string start = "hdiutil detach ";
+      string command = start + name;
+
+      exec(command.c_str());
+    }
+
+    void remove(const char* name) {
+      string start = "rm";
+      string command = start + " " + name;
+      exec(command.c_str());
+    }
+  }
 }
 
-string attach(const char* name) {
-  string start = "hdiutil attach ";
+namespace Installer {
+  namespace Macos {
+    namespace Dmg {
+      void unpackage() {
+        cout << endl;
+        cout << "Unpacking dmg..." << endl;
 
-  cout << "Attaching " << name << endl;
-
-  string command = start + name;
-  string volume = exec(command.c_str());
-
-  string r = "\\/Volumes\\/(\\s?\\w+)*";
-  smatch m;
-  regex_search(volume, m, regex(r));
-  
-  return regex_replace(m.str(), regex("\\s"), "\\ ");
-}
-
-void copy(const char* name) {
-  cout << "Installing " << endl;
-
-  string start = "cp -rf ";
-  string end = "/*.app /Applications";
-
-  string command = start + name + end;
-  exec(command.c_str());
-}
-
-void detach(const char* name) {
-  string start = "hdiutil detach ";
-  string command = start + name;
-
-  cout << "Detaching " << name << endl;
-
-  exec(command.c_str());
-}
-
-int main(int argc, char** argv) {
-  if (argc < 2) return 1;
-
-  string file = regex_replace(argv[1], regex("\\s"), "\\ ");
-  string volume = attach(file.c_str());
-  copy(volume.c_str());
-  detach(volume.c_str());
+        string file = "/tmp/bytecube-installed-package.dmg";
+        string volume = Util::Dmg::attach(file.c_str());
+        Util::Dmg::copy(volume.c_str());
+        Util::Dmg::detach(volume.c_str());
+        Util::Dmg::remove(file.c_str());
+      }
+    }
+  }
 }
