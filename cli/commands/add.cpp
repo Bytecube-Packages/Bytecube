@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
+
 #include "../util/colors.cpp"
+#include "../util/package.cpp"
 using namespace std;
 
 namespace Command {
@@ -16,10 +18,10 @@ namespace Command {
         set_color(0);
         cout << "\"" << endl;
 
-        for (int i = 0; i <= 100; i++) {
-          display_progress(i);
-          usleep(200000);
-        }
+        // actually install the package
+        display_progress(0);
+        Installer::fetchPackage("macos", package, display_progress);
+
         cout << endl;
 
         set_color(0);
