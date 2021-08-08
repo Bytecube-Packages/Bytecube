@@ -13,7 +13,7 @@ namespace Installer {
     string end = "\"";
 
     string platform_param = "?platform=" + url_encode(platform);
-    string package_param = "&package=" + url_encode(package);
+    string package_param = "&package=" + package;
 
     string cmd = start + platform_param + package_param + end;
     string url = exec(cmd.c_str());
@@ -28,7 +28,7 @@ namespace Installer {
       string url = getUrl(platform, package);
 
       if (platform == "macos") {
-        Macos::Dmg::download(url, progress);
+        Macos::Dmg::download(package, url, progress);
         return true;
       }
       return false;
@@ -39,9 +39,11 @@ namespace Installer {
   }
 
   bool installPackage(string platform, string package, void (*progress)(int)) {
+    package = url_encode(package);
+
     if (fetchPackage(platform, package, progress)) {
       if (platform == "macos") {
-        Macos::Dmg::unpackage();
+        Macos::Dmg::unpackage(package);
         return true;
       }
     }

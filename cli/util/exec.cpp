@@ -20,3 +20,7 @@ string exec(const char* cmd) {
   }
   return result;
 }
+
+string exec(string cmd) {
+  return exec(cmd.c_str());
+}

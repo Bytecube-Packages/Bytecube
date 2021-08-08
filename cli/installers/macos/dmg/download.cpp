@@ -1,20 +1,7 @@
 #include "../../../util/exec.cpp"
+#include "./util.cpp"
+
 using namespace std;
-
-string al_encode(const string &value) {
-  string output = "";
-
-  for (string::const_iterator i = value.begin(), n = value.end(); i != n; ++i) {
-    string::value_type c = (*i);
-
-    if (c == ' ') continue;
-    if (c > 32) continue;
-    output += to_string(int((unsigned char) c));
-    output += " ";
-  }
-
-  return output;
-}
 
 void download_percentages(const char* cmd, void (*progress)(int)) {
   (*progress)(0);
@@ -60,8 +47,11 @@ void download_percentages(const char* cmd, void (*progress)(int)) {
 namespace Installer {
   namespace Macos {
     namespace Dmg {
-      void download(string url, void (*progress)(int)) {
-        string begining = "curl -L --output /tmp/bytecube-installed-package.dmg";
+      void download(string name, string url, void (*progress)(int)) {
+        Util::Dmg::remove(name.c_str());
+        exec("mkdir -p /tmp/bytecube/" + name + "/apps");
+
+        string begining = "curl -L --output /tmp/bytecube/" + name + "/installer.dmg";
         string cmd = begining + " " + url + " 2>&1";
 
         download_percentages(cmd.c_str(), progress);
