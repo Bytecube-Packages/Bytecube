@@ -1,0 +1,73 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum MacOSInstallType {
+  dmg
+  app
+}
+
+enum WindowsInstallType {
+  exe
+  msi
+}
+
+enum LinuxInstallType {
+  deb
+}
+
+model Package {
+  id          String @id @default(uuid())
+  name        String
+  description String
+  version     String
+
+  install PackageInstall?
+}
+
+model PackageInstall {
+  id        String  @id @default(uuid())
+
+  packageId String
+  package   Package @relation(fields: [packageId], references: [id])
+
+  macos MacOS?
+  windows Windows?
+  linux Linux?
+}
+
+model MacOS {
+  id               String         @id @default(uuid())
+  url String
+  checksum String?
+  type MacOSInstallType
+
+  packageInstallId String
+  packageInstall   PackageInstall @relation(fields: [packageInstallId], references: [id])
+}
+
+model Windows {
+  id               String         @id @default(uuid())
+  url String
+  checksum String?
+  type WindowsInstallType
+
+  packageInstallId String
+  packageInstall   PackageInstall @relation(fields: [packageInstallId], references: [id])
+}
+
+model Linux {
+  id               String         @id @default(uuid())
+  url String
+  checksum String?
+  type LinuxInstallType
+
+  packageInstallId String
+  packageInstall   PackageInstall @relation(fields: [packageInstallId], references: [id])
+}
+
