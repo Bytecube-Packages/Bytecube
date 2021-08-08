@@ -61,7 +61,7 @@ namespace Installer {
   namespace Macos {
     namespace Dmg {
       void download(string url, void (*progress)(int)) {
-        string begining = "curl --output /tmp/bytecube-installed-package.dmg";
+        string begining = "curl -L --output /tmp/bytecube-installed-package.dmg";
         string cmd = begining + " " + url + " 2>&1";
 
         download_percentages(cmd.c_str(), progress);

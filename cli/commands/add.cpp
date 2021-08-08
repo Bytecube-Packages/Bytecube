@@ -19,7 +19,6 @@ namespace Command {
         cout << "\"" << endl;
 
         // actually install the package
-        display_progress(0);
         Installer::installPackage("macos", package, display_progress);
 
         cout << endl;
