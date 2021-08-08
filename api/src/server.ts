@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import * as http from "http";
 import express, { Express } from "express";
 

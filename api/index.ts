@@ -21,9 +21,9 @@ export function routeConfig({method, path}: RouteConfigProps): MethodDecorator {
         propertyKey: string | symbol,
         descriptor: PropertyDescriptor
     ) {
-        const response = (req: Request, res: Response) => {
+        const response = async (req: Request, res: Response) => {
             try {
-                const original = descriptor.value(req, res);
+                const original = await descriptor.value(req, res);
                 res.status(200).json(original);
             } catch (e) {
                 res.status(500).json({
