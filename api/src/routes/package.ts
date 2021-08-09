@@ -26,12 +26,8 @@ import { db, InstallOptions, PackageOptions } from "../db/Database";
       type: "dmg",
     },
     windows: {
-      url: "https://dl.google.com/chrome/install/1/GGRO/googlechrome.exe",
+      url: "https://dl.google.com/chrome/install/1/chrome_installer.exe",
       type: "exe",
-    },
-    linux: {
-      url: "https://dl.google.com/chrome/install/1/GGRO/google-chrome",
-      type: "deb",
     },
   });
 })();

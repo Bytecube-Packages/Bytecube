@@ -2,8 +2,13 @@
 #include "./url_encode.cpp"
 #include <iostream>
 
+#include "./os.cpp"
+
 #include "../installers/macos/dmg/download.cpp"
 #include "../installers/macos/dmg/unpackage.cpp"
+
+#include "../installers/windows/exe/download.cpp"
+#include "../installers/windows/exe/unpackage.cpp"
 
 using namespace std;
 
@@ -23,12 +28,16 @@ namespace Installer {
     return url;
   }
 
-  bool fetchPackage(string platform, string package, void (*progress)(int)) {
+  bool fetchPackage(string package, void (*progress)(int)) {
     try {
-      string url = getUrl(platform, package);
+      string url = getUrl(os, package);
 
-      if (platform == "macos") {
+      if (isMacos) {
         Macos::Dmg::download(package, url, progress);
+        return true;
+      }
+      if (isWindows) {
+        Windows::Exe::download(package, url, progress);
         return true;
       }
       return false;
@@ -38,12 +47,16 @@ namespace Installer {
     }
   }
 
-  bool installPackage(string platform, string package, void (*progress)(int)) {
+  bool installPackage(string package, void (*progress)(int)) {
     package = url_encode(package);
 
-    if (fetchPackage(platform, package, progress)) {
-      if (platform == "macos") {
+    if (fetchPackage(package, progress)) {
+      if (isMacos) {
         Macos::Dmg::unpackage(package);
+        return true;
+      }
+      if (isWindows) {
+        Windows::Exe::unpackage(package);
         return true;
       }
     }
