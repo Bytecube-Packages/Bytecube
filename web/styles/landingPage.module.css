@@ -1,0 +1,26 @@
+.navbar {
+  height: 100px;
+}
+.navbar__logo {
+
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  height: 100%;
+}
+
+.tag {
+  margin-left: 150px;
+}
+.tag__text {
+  font-size: 64px;
+  color: #fff;
+}
+.tag_important {
+  color: var(--secondary);
+}

@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap');
 
 :root {
-  --bg: #222222;
-
   --primary-100: #DEE3EA;
   --primary-200: #B2BDCD;
   --primary-300: #5D7290;
@@ -15,6 +13,23 @@
 
   --accent: #3FB4BB;
   --secondary: #42D0D9;
+}
+
+body {
+  background-color: var(--primary-800);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 100vw;
+  height: 100vh;
+}
+
+#__next {
+  width: 100%;
+  height: 100%;
 }
 
 * {
