@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <unistd.h>
 
 #include "../util/colors.cpp"
 #include "../util/package.cpp"
