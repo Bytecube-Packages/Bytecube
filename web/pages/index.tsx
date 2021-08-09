@@ -2,7 +2,11 @@ import { NextPage } from "next";
 
 const IndexPage: NextPage = () => (
   <div>
-    <h1>Page</h1>
+    <div>
+      <div>Seamlessy</div>
+      <div>develop</div>
+      <div>software</div>
+    </div>
   </div>
 );
 
