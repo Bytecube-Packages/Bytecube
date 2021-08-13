@@ -1,4 +1,4 @@
-import { Package, Prisma } from "@prisma/client";
+import { Package, prisma, Prisma } from "@prisma/client";
 
 import { Request, Response } from "express";
 import { METHOD, routeConfig } from "../..";
@@ -42,20 +42,23 @@ import { db, InstallOptions, PackageOptions } from "../db/Database";
 
   if (existingPackage) return;
 
-  addPackage({
-    name: "skyline",
-    description: "The Super Fast Code Editor",
-    version: "1.0.0",
-  }, {
-    macos: {
-      url: "https://github.com/skyline-editor/skyline/releases/download/v0.1.0/Skyline_0.1.0_x64.dmg",
-      type: "dmg",
+  addPackage(
+    {
+      name: "skyline",
+      description: "The Super Fast Code Editor",
+      version: "1.0.0",
     },
-    windows: {
-      url: "https://github.com/skyline-editor/skyline/releases/download/v0.1.0/Skyline_0.1.0_x64.msi",
-      type: "msi",
-    },
-  });
+    {
+      macos: {
+        url: "https://github.com/skyline-editor/skyline/releases/download/v0.1.0/Skyline_0.1.0_x64.dmg",
+        type: "dmg",
+      },
+      windows: {
+        url: "https://github.com/skyline-editor/skyline/releases/download/v0.1.0/Skyline_0.1.0_x64.msi",
+        type: "msi",
+      },
+    }
+  );
 })();
 
 /* Temporary package creation done */
@@ -84,8 +87,11 @@ import { db, InstallOptions, PackageOptions } from "../db/Database";
  *     type: 'deb'
  *   }
  * })
-**/
-async function addPackage(pkg: PackageOptions, opts: InstallOptions): Promise<void> {
+ **/
+async function addPackage(
+  pkg: PackageOptions,
+  opts: InstallOptions
+): Promise<void> {
   const { name, description, version } = pkg;
 
   const install: Prisma.PackageInstallCreateWithoutPackageInput = {};
@@ -120,8 +126,8 @@ async function addPackage(pkg: PackageOptions, opts: InstallOptions): Promise<vo
       description,
       version,
       install: {
-        create: install
-      }
+        create: install,
+      },
     },
   });
 }
@@ -172,7 +178,10 @@ class PackageController {
     });
 
     if (!packageData) throw new Error(`Couldn't find package "${packageID}"`);
-    if (!(platform in packageData.install!)) throw new Error(`Package "${packageID}", cant be installed on your system`);
+    if (!(platform in packageData.install!))
+      throw new Error(
+        `Package "${packageID}", cant be installed on your system`
+      );
 
     return packageData.install![platform as keyof InstallOptions]!.url;
   }
@@ -183,9 +192,35 @@ class PackageController {
   })
   public async list(request: Request, _response: Response): Promise<Package[]> {
     const packages = await db.package.findMany({
-      where: {}
+      where: {},
     });
 
     return packages;
+  }
+
+  @routeConfig({
+    method: METHOD.POST,
+    path: "/package/publish",
+  })
+  public async publish(request: Request, _response: Response): Promise<any> {
+    const { name, description, version } = request.body;
+
+    addPackage(
+      {
+        name: name,
+        description: description,
+        version: version,
+      },
+      {
+        macos: {
+          url: "https://github.com/skyline-editor/skyline/releases/download/v0.1.0/Skyline_0.1.0_x64.dmg",
+          type: "dmg",
+        },
+        windows: {
+          url: "https://github.com/skyline-editor/skyline/releases/download/v0.1.0/Skyline_0.1.0_x64.msi",
+          type: "msi",
+        },
+      }
+    );
   }
 }
