@@ -22,6 +22,7 @@ namespace Installer {
           cout << "Installing exe..." << endl;
 
           Util::Windows::Exe::install(name.c_str());
+          Util::Windows::remove(name.c_str());
         }
       #else
         void unpackage(string name) {}

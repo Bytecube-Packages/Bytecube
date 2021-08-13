@@ -12,12 +12,7 @@ namespace Installer {
           Util::Windows::remove(name.c_str());
           Util::Windows::create(name.c_str());
 
-          #ifdef __CYGWIN__
-            string begining = "-L --output /tmp/bytecube/" + name + "/installer.exe";
-          #else
-            string begining = "-L --output %TMP%/bytecube/" + name + "/installer.exe";
-          #endif
-
+          string begining = "-L --output %TMP%/bytecube/" + name + "/installer.exe";
           string cmd = begining + " " + url + " 2>&1";
 
           Util::download_progress(cmd.c_str(), progress);

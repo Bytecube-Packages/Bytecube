@@ -36,7 +36,6 @@ string exec(const char* cmd) {
   string result;
   array<char, 128> buffer;
   while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) result += buffer.data();
-  cout << "result: " << result << endl;
   return result;
 }
 

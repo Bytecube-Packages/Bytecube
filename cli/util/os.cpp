@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-#if defined(_WIN64) || defined(_WIN32) || defined(__CYGWIN__)
+#if defined(_WIN64) || defined(_WIN32)
   string os = "windows";
   const bool isWindows = true;
   const bool isMacos = false;

@@ -19,13 +19,11 @@ namespace Util {
     array<char, 32> buffer;
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
       string current = buffer.data();
-      cout << current << flush;
-
       for (int i = 0; i < current.size(); i++) {
         char c = current[i];
 
         if (int(c) == 13) {
-          //(*progress)(p);
+          (*progress)(p);
 
           new_line = true;
           str = true;
