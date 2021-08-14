@@ -10,6 +10,9 @@
 #include "../installers/windows/exe/download.cpp"
 #include "../installers/windows/exe/unpackage.cpp"
 
+#include "../installers/windows/msi/download.cpp"
+#include "../installers/windows/msi/unpackage.cpp"
+
 using namespace std;
 
 namespace Installer {
@@ -27,17 +30,32 @@ namespace Installer {
     if (url[0] != '"') throw runtime_error("An Error occured while fetching url");
     return url;
   }
+  string getMeta(string platform, string package) {
+    string start = "curl -s \"localhost:3000/package/meta";
+    string end = "\"";
 
-  bool fetchPackage(string package, void (*progress)(int)) {
+    string platform_param = "?platform=" + url_encode(platform);
+    string package_param = "&package=" + package;
+
+    string cmd = start + platform_param + package_param + end;
+    string meta = exec(cmd.c_str());
+
+    if (meta.empty()) throw runtime_error("Failed to fetch package meta");
+    if (meta[0] != '"') throw runtime_error("An Error occured while fetching meta");
+    return meta;
+  }
+
+  bool fetchPackage(string package, string meta, void (*progress)(int)) {
     try {
       string url = getUrl(os, package);
 
       if (isMacos) {
-        Macos::Dmg::download(package, url, progress);
+        if (meta == "dmg") Macos::Dmg::download(package, url, progress);
         return true;
       }
       if (isWindows) {
-        Windows::Exe::download(package, url, progress);
+        if (meta == "exe") Windows::Exe::download(package, url, progress);
+        if (meta == "msi") Windows::Msi::download(package, url, progress);
         return true;
       }
       return false;
@@ -50,13 +68,17 @@ namespace Installer {
   bool installPackage(string package, void (*progress)(int)) {
     package = url_encode(package);
 
-    if (fetchPackage(package, progress)) {
+    string meta = getMeta(os, package);
+    meta = meta.substr(1, meta.size() - 2);
+
+    if (fetchPackage(package, meta, progress)) {
       if (isMacos) {
-        Macos::Dmg::unpackage(package);
+        if (meta == "dmg") Macos::Dmg::unpackage(package);
         return true;
       }
       if (isWindows) {
-        Windows::Exe::unpackage(package);
+        if (meta == "exe") Windows::Exe::unpackage(package);
+        if (meta == "msi") Windows::Msi::unpackage(package);
         return true;
       }
     }
