@@ -79,13 +79,9 @@ import { db, InstallOptions, PackageOptions } from "../db/Database";
  *     type: 'dmg'
  *   },
  *   windows: {
- *     url: 'https://dl.google.com/chrome/install/1/GGRO/googlechrome.exe',
+ *     url: 'https://dl.google.com/chrome/install/1/chrome_installer.exe',
  *     type: 'exe'
  *   },
- *   linux: {
- *     url: 'https://dl.google.com/chrome/install/1/GGRO/google-chrome',
- *     type: 'deb'
- *   }
  * })
  **/
 async function addPackage(
@@ -184,6 +180,41 @@ class PackageController {
       );
 
     return packageData.install![platform as keyof InstallOptions]!.url;
+  }
+
+  @routeConfig({
+    method: METHOD.GET,
+    path: "/package/meta",
+  })
+  public async meta(request: Request, _response: Response): Promise<string> {
+    const packageID = request.query.package?.toString().toLowerCase();
+    const platform = request.query.platform?.toString().toLowerCase();
+
+    if (!packageID) throw new Error(`"package" is required`);
+    if (!platform) throw new Error(`"platform" is required`);
+
+    const packageData = await db.package.findFirst({
+      where: {
+        name: packageID,
+      },
+      include: {
+        install: {
+          include: {
+            macos: true,
+            windows: true,
+            linux: true,
+          },
+        },
+      },
+    });
+
+    if (!packageData) throw new Error(`Couldn't find package "${packageID}"`);
+    if (!(platform in packageData.install!))
+      throw new Error(
+        `Package "${packageID}", cant be installed on your system`
+      );
+
+    return packageData.install![platform as keyof InstallOptions]!.type;
   }
 
   @routeConfig({
