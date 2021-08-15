@@ -188,20 +188,20 @@ namespace Util {
         this->setValue(value);
       }
 
-      string getValue(string default) {
-        if (type != "string") return default;
+      string getValue(string backup) {
+        if (type != "string") return backup;
         return str;
       }
-      const char* getValue(const char* default) {
-        if (type != "string") return default;
+      const char* getValue(const char* backup) {
+        if (type != "string") return backup;
         return str.c_str();
       }
-      bool getValue(bool default) {
-        if (type != "boolean") return default;
+      bool getValue(bool backup) {
+        if (type != "boolean") return backup;
         return boolean;
       }
-      int getValue(int default) {
-        if (type != "integer") return default;
+      int getValue(int backup) {
+        if (type != "integer") return backup;
         return integer;
       }
       vector<Json> getArray() {
