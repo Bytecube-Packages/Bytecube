@@ -215,7 +215,6 @@ class PackageController {
     path: "/package/publish",
   })
   public async publish(request: Request, _response: Response): Promise<any> {
-    console.log(request.body);
     if (!request.body) throw new Error("No body");
     if (!request.body.info) throw new Error("No info");
 
