@@ -4,6 +4,8 @@
 #include "./url_encode.cpp"
 #include <iostream>
 
+#include "./colors.cpp"
+#include "./api.cpp"
 #include "./os.cpp"
 
 #include "../installers/macos/dmg/download.cpp"
@@ -44,7 +46,7 @@ namespace Installer {
     params["platform"] = platform;
     params["package"] = package;
 
-    string start = "curl -s \"localhost:3000/package/install";
+    string start = "curl -s -k \"" + api + "/package/install";
     string end = "\"";
 
     string cmd = start + to_http(params, false) + end;
@@ -174,7 +176,7 @@ Json createPackage(PackageInfo info, InstallerOptions installers) {
 
 void publishPackage(Json package) {
   string json = package.stringify();
-  string cmd = "curl -s -H \"Content-Type: application/json\" -X POST -d \"" + escape(json) + "\" \"localhost:3000/package/publish\" ";
+  string cmd = "curl -s -k -H \"Content-Type: application/json\" -X POST -d \"" + escape(json) + "\" \"" + api + "/package/publish\" ";
 
   string result = exec(cmd.c_str());
   Json jsonResult = Json::parse(result);
