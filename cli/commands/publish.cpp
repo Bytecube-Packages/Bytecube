@@ -37,7 +37,6 @@ namespace Command {
         options.linux = getInstallOption(linux);
 
         Json pkg = createPackage(info, options);
-        cout << "Package Json: " << pkg.stringify() << endl;
 
         publishPackage(pkg);
 
