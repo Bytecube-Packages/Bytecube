@@ -1,8 +1,8 @@
-import { Package, prisma, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 import { Request, Response } from "express";
 import { METHOD, routeConfig } from "../..";
-import { db, InstallOptions, PackageOptions } from "../db/Database";
+import { db, Install, InstallOptions, Package, PackageOptions } from "../db/Database";
 
 /* Temporary package creation queries */
 
@@ -131,27 +131,9 @@ async function addPackage(
 class PackageController {
   @routeConfig({
     method: METHOD.GET,
-    path: "/package/",
-  })
-  public async get(request: Request, _response: Response): Promise<Package> {
-    const packageID = request.query.id?.toString()?.toLowerCase();
-    if (!packageID) throw new Error(`"id" is required`);
-
-    const packageData = await db.package.findFirst({
-      where: {
-        name: packageID,
-      },
-    });
-
-    if (!packageData) throw new Error(`Couldn't find package "${packageID}"`);
-    return packageData as Package;
-  }
-
-  @routeConfig({
-    method: METHOD.GET,
     path: "/package/install",
   })
-  public async install(request: Request, _response: Response): Promise<string> {
+  public async install(request: Request, _response: Response): Promise<Install> {
     const packageID = request.query.package?.toString().toLowerCase();
     const platform = request.query.platform?.toString().toLowerCase();
 
@@ -179,14 +161,19 @@ class PackageController {
         `Package "${packageID}", cant be installed on your system`
       );
 
-    return packageData.install![platform as keyof InstallOptions]!.url;
+    const data = packageData.install![platform as keyof InstallOptions]!;
+
+    return {
+      url: data.url,
+      type: data.type,
+    };
   }
 
   @routeConfig({
     method: METHOD.GET,
     path: "/package/meta",
   })
-  public async meta(request: Request, _response: Response): Promise<string> {
+  public async meta(request: Request, _response: Response): Promise<Package> {
     const packageID = request.query.package?.toString().toLowerCase();
     const platform = request.query.platform?.toString().toLowerCase();
 
@@ -197,36 +184,30 @@ class PackageController {
       where: {
         name: packageID,
       },
-      include: {
-        install: {
-          include: {
-            macos: true,
-            windows: true,
-            linux: true,
-          },
-        },
-      },
     });
 
     if (!packageData) throw new Error(`Couldn't find package "${packageID}"`);
-    if (!(platform in packageData.install!))
-      throw new Error(
-        `Package "${packageID}", cant be installed on your system`
-      );
-
-    return packageData.install![platform as keyof InstallOptions]!.type;
+    return {
+      name: packageData.name,
+      description: packageData.description,
+      version: packageData.version,
+    };
   }
 
   @routeConfig({
     method: METHOD.GET,
     path: "/package/list",
   })
-  public async list(request: Request, _response: Response): Promise<Package[]> {
+  public async list(_request: Request, _response: Response): Promise<Package[]> {
     const packages = await db.package.findMany({
       where: {},
     });
 
-    return packages;
+    return packages.map(v => ({
+      name: v.name,
+      description: v.description,
+      version: v.version,
+    }));
   }
 
   @routeConfig({

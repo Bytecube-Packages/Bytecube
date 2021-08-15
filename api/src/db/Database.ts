@@ -20,3 +20,12 @@ export interface InstallOptions {
     type: 'deb' | 'zip' | 'sh'; 
   };
 }
+export interface Install {
+  url: string;
+  type: string;
+}
+export interface Package {
+  name: string;
+  description: string;
+  version: string;
+};
