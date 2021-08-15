@@ -18,7 +18,6 @@ namespace Installer {
     namespace Dmg {
       #ifdef MACOS
         void unpackage(string name) {
-          cout << endl;
           cout << "Unpacking dmg..." << endl;
 
           string file = "/tmp/bytecube/" + name + "/installer.dmg";

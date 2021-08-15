@@ -18,8 +18,7 @@ namespace Installer {
     namespace Exe {
       #ifdef WINDOWS
         void unpackage(string name) {
-          cout << endl;
-          cout << "Installing exe..." << endl;
+          cout << "Running exe..." << endl;
 
           Util::Windows::Exe::install(name.c_str());
           Util::Windows::remove(name.c_str());
