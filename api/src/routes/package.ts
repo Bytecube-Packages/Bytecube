@@ -1,8 +1,8 @@
-import { Package, prisma, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 import { Request, Response } from "express";
 import { METHOD, routeConfig } from "../..";
-import { db, InstallOptions, PackageOptions } from "../db/Database";
+import { db, Install, InstallOptions, Package, PackageOptions } from "../db/Database";
 
 /* Temporary package creation queries */
 
@@ -16,27 +16,20 @@ import { db, InstallOptions, PackageOptions } from "../db/Database";
 
   if (existingPackage) return;
 
-  addPackage(
-    {
-      name: "chrome",
-      description: "The Google Chrome browser",
-      version: "1.0.0",
+  addPackage({
+    name: "chrome",
+    description: "The Google Chrome browser",
+    version: "1.0.0",
+  }, {
+    macos: {
+      url: "https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg",
+      type: "dmg",
     },
-    {
-      macos: {
-        url: "https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg",
-        type: "dmg",
-      },
-      windows: {
-        url: "https://dl.google.com/chrome/install/1/GGRO/googlechrome.exe",
-        type: "exe",
-      },
-      linux: {
-        url: "https://dl.google.com/chrome/install/1/GGRO/google-chrome",
-        type: "deb",
-      },
-    }
-  );
+    windows: {
+      url: "https://dl.google.com/chrome/install/1/chrome_installer.exe",
+      type: "exe",
+    },
+  });
 })();
 
 // Skyline
@@ -86,13 +79,9 @@ import { db, InstallOptions, PackageOptions } from "../db/Database";
  *     type: 'dmg'
  *   },
  *   windows: {
- *     url: 'https://dl.google.com/chrome/install/1/GGRO/googlechrome.exe',
+ *     url: 'https://dl.google.com/chrome/install/1/chrome_installer.exe',
  *     type: 'exe'
  *   },
- *   linux: {
- *     url: 'https://dl.google.com/chrome/install/1/GGRO/google-chrome',
- *     type: 'deb'
- *   }
  * })
  **/
 async function addPackage(
@@ -142,27 +131,9 @@ async function addPackage(
 class PackageController {
   @routeConfig({
     method: METHOD.GET,
-    path: "/package/",
-  })
-  public async get(request: Request, _response: Response): Promise<Package> {
-    const packageID = request.query.id?.toString()?.toLowerCase();
-    if (!packageID) throw new Error(`"id" is required`);
-
-    const packageData = await db.package.findFirst({
-      where: {
-        name: packageID,
-      },
-    });
-
-    if (!packageData) throw new Error(`Couldn't find package "${packageID}"`);
-    return packageData as Package;
-  }
-
-  @routeConfig({
-    method: METHOD.GET,
     path: "/package/install",
   })
-  public async install(request: Request, _response: Response): Promise<string> {
+  public async install(request: Request, _response: Response): Promise<Install> {
     const packageID = request.query.package?.toString().toLowerCase();
     const platform = request.query.platform?.toString().toLowerCase();
 
@@ -190,19 +161,53 @@ class PackageController {
         `Package "${packageID}", cant be installed on your system`
       );
 
-    return packageData.install![platform as keyof InstallOptions]!.url;
+    const data = packageData.install![platform as keyof InstallOptions]!;
+
+    return {
+      url: data.url,
+      type: data.type,
+    };
+  }
+
+  @routeConfig({
+    method: METHOD.GET,
+    path: "/package/meta",
+  })
+  public async meta(request: Request, _response: Response): Promise<Package> {
+    const packageID = request.query.package?.toString().toLowerCase();
+    const platform = request.query.platform?.toString().toLowerCase();
+
+    if (!packageID) throw new Error(`"package" is required`);
+    if (!platform) throw new Error(`"platform" is required`);
+
+    const packageData = await db.package.findFirst({
+      where: {
+        name: packageID,
+      },
+    });
+
+    if (!packageData) throw new Error(`Couldn't find package "${packageID}"`);
+    return {
+      name: packageData.name,
+      description: packageData.description,
+      version: packageData.version,
+    };
   }
 
   @routeConfig({
     method: METHOD.GET,
     path: "/package/list",
   })
-  public async list(request: Request, _response: Response): Promise<Package[]> {
+  public async list(_request: Request, _response: Response): Promise<Package[]> {
     const packages = await db.package.findMany({
       where: {},
     });
 
-    return packages;
+    return packages.map(v => ({
+      name: v.name,
+      description: v.description,
+      version: v.version,
+    }));
   }
 
   @routeConfig({
@@ -210,24 +215,82 @@ class PackageController {
     path: "/package/publish",
   })
   public async publish(request: Request, _response: Response): Promise<any> {
-    const { name, description, version } = request.body;
+    if (!request.body) throw new Error("No body");
+    if (!request.body.info) throw new Error("No info");
+
+    const info = request.body.info;
+    const install = request.body.install ?? {};
+
+    if (!info.name) throw new Error("No name");
+    if (!info.description) throw new Error("No description");
+    if (!info.version) throw new Error("No version");
+
+    const { name, description, version } = info;
+
+    let packageData;
+    try {
+      packageData = await db.package.findFirst({
+        where: {
+          name,
+        },
+      });
+    } catch(_) {}
+    if (packageData) throw new Error(`Package "${name}" already exists`);
+
+    const installers: InstallOptions = {};
+    if (install.macos) {
+      const types = ["dmg", "app", "pkg", "zip", "sh"];
+      const installer = install.macos;
+
+      if (!installer.url) throw new Error("No macos url");
+      if (!installer.type) throw new Error("No macos type");
+
+      if (!installer.url.endsWith(installer.type)) throw new Error("macos url must end with macos type");
+      if (!types.includes(installer.type)) throw new Error("macos type must be one of: " + types.join(", "));
+
+      installers.macos = {
+        url: installer.url,
+        type: installer.type,
+      };
+    }
+    if (install.windows) {
+      const types = ["msi", "exe", "zip", "sh"];
+      const installer = install.windows;
+
+      if (!installer.url) throw new Error("No windows url");
+      if (!installer.type) throw new Error("No windows type");
+
+      if (!installer.url.endsWith(installer.type)) throw new Error("windows url must end with windows type");
+      if (!types.includes(installer.type)) throw new Error("windows type must be one of: " + types.join(", "));
+
+      installers.windows = {
+        url: installer.url,
+        type: installer.type,
+      };
+    }
+    if (install.linux) {
+      const types = ["deb", "zip", "sh"];
+      const installer = install.linux;
+
+      if (!installer.url) throw new Error("No linux url");
+      if (!installer.type) throw new Error("No linux type");
+
+      if (!installer.url.endsWith(installer.type)) throw new Error("linux url must end with linux type");
+      if (!types.includes(installer.type)) throw new Error("linux type must be one of: " + types.join(", "));
+
+      installers.linux = {
+        url: installer.url,
+        type: installer.type,
+      };
+    }
 
     addPackage(
       {
-        name: name,
-        description: description,
-        version: version,
+        name,
+        description,
+        version,
       },
-      {
-        macos: {
-          url: "https://github.com/skyline-editor/skyline/releases/download/v0.1.0/Skyline_0.1.0_x64.dmg",
-          type: "dmg",
-        },
-        windows: {
-          url: "https://github.com/skyline-editor/skyline/releases/download/v0.1.0/Skyline_0.1.0_x64.msi",
-          type: "msi",
-        },
-      }
+      installers
     );
   }
 }

@@ -9,6 +9,11 @@ namespace Command {
   class Install {
     public:
       static void run(string package) {
+        if (os == "unknown") {
+          cout << "Unknown OS" << endl;
+          return;
+        }
+
         cout << "Installing \"";
 
         set_color(accent);
@@ -18,12 +23,11 @@ namespace Command {
         cout << "\"" << endl;
 
         // actually install the package
-        Installer::installPackage("macos", package, display_progress);
-
-        cout << endl;
+        if (!Installer::installPackage(package, display_progress)) exit(1);
 
         set_color(0);
         set_color(accent);
+        set_bold(true);
         cout << "Finished" << endl;
 
         set_color(0);

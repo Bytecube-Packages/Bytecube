@@ -5,6 +5,7 @@
 
 #include "./commands/login.cpp"
 #include "./commands/add.cpp"
+#include "./commands/publish.cpp"
 using namespace std;
 
 void error() {
@@ -36,6 +37,15 @@ int main(int argc, char** argv) {
     }
     
     Command::Install::run(argv[2]);
+    return EXIT_SUCCESS;
+  }
+  if (strcmp(argv[1], "publish") == 0) {
+    if (argc < 3) {
+      error("publish <package>");
+      return EINVAL;
+    }
+    
+    Command::Publish::run(argv[2]);
     return EXIT_SUCCESS;
   }
 

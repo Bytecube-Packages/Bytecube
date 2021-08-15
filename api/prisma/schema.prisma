@@ -10,17 +10,22 @@ generator client {
 enum MacOSInstallType {
   dmg
   app
+  pkg
   zip
+  sh
 }
 
 enum WindowsInstallType {
   exe
   msi
+  zip
+  sh
 }
 
 enum LinuxInstallType {
   deb
   zip
+  sh
 }
 
 model Package {

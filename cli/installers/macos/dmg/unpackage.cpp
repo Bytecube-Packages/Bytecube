@@ -7,24 +7,30 @@
 #include <array>
 #include <regex>
 
+#include "../../../util/os.cpp"
 #include "./util.cpp"
+#include "../util.cpp"
 
 using namespace std;
 
 namespace Installer {
   namespace Macos {
     namespace Dmg {
-      void unpackage(string name) {
-        cout << endl;
-        cout << "Unpacking dmg..." << endl;
+      #ifdef MACOS
+        void unpackage(string name) {
+          cout << "Unpacking dmg..." << endl;
 
-        string file = "/tmp/bytecube/" + name + "/installer.dmg";
-        string volume = Util::Dmg::attach(file.c_str());
-        Util::Dmg::copy(volume.c_str(), name.c_str());
-        Util::Dmg::detach(volume.c_str());
-        Util::Dmg::move(name.c_str());
-        Util::Dmg::remove(name.c_str());
-      }
+          string file = "/tmp/bytecube/" + name + "/installer.dmg";
+          string volume = Util::Macos::Dmg::attach(file.c_str());
+          Util::Macos::Dmg::copy(volume.c_str(), name.c_str());
+          Util::Macos::Dmg::detach(volume.c_str());
+
+          Util::Macos::move(name.c_str());
+          Util::Macos::remove(name.c_str());
+        }
+      #else
+        void unpackage(string name) {}
+      #endif
     }
   }
 }
