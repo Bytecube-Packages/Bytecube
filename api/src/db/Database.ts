@@ -9,14 +9,14 @@ export interface PackageOptions {
 export interface InstallOptions {
   macos?: {
     url: string;
-    type: 'dmg' | 'zip' | 'app';
+    type: 'dmg' | 'app' | 'pkg' | 'zip' | 'sh';
   };
   windows?: {
     url: string;
-    type: 'msi' | 'exe';
+    type: 'msi' | 'exe' | 'zip' | 'sh';
   };
   linux?: {
     url: string;
-    type: 'deb' | 'zip'; 
+    type: 'deb' | 'zip' | 'sh'; 
   };
 }

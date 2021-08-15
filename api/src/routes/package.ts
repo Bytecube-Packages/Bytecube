@@ -234,24 +234,83 @@ class PackageController {
     path: "/package/publish",
   })
   public async publish(request: Request, _response: Response): Promise<any> {
-    const { name, description, version } = request.body;
+    console.log(request.body);
+    if (!request.body) throw new Error("No body");
+    if (!request.body.info) throw new Error("No info");
+
+    const info = request.body.info;
+    const install = request.body.install ?? {};
+
+    if (!info.name) throw new Error("No name");
+    if (!info.description) throw new Error("No description");
+    if (!info.version) throw new Error("No version");
+
+    const { name, description, version } = info;
+
+    let packageData;
+    try {
+      packageData = await db.package.findFirst({
+        where: {
+          name,
+        },
+      });
+    } catch(_) {}
+    if (packageData) throw new Error(`Package "${name}" already exists`);
+
+    const installers: InstallOptions = {};
+    if (install.macos) {
+      const types = ["dmg", "app", "pkg", "zip", "sh"];
+      const installer = install.macos;
+
+      if (!installer.url) throw new Error("No macos url");
+      if (!installer.type) throw new Error("No macos type");
+
+      if (!installer.url.endsWith(installer.type)) throw new Error("macos url must end with macos type");
+      if (!types.includes(installer.type)) throw new Error("macos type must be one of: " + types.join(", "));
+
+      installers.macos = {
+        url: installer.url,
+        type: installer.type,
+      };
+    }
+    if (install.windows) {
+      const types = ["msi", "exe", "zip", "sh"];
+      const installer = install.windows;
+
+      if (!installer.url) throw new Error("No windows url");
+      if (!installer.type) throw new Error("No windows type");
+
+      if (!installer.url.endsWith(installer.type)) throw new Error("windows url must end with windows type");
+      if (!types.includes(installer.type)) throw new Error("windows type must be one of: " + types.join(", "));
+
+      installers.windows = {
+        url: installer.url,
+        type: installer.type,
+      };
+    }
+    if (install.linux) {
+      const types = ["deb", "zip", "sh"];
+      const installer = install.linux;
+
+      if (!installer.url) throw new Error("No linux url");
+      if (!installer.type) throw new Error("No linux type");
+
+      if (!installer.url.endsWith(installer.type)) throw new Error("linux url must end with linux type");
+      if (!types.includes(installer.type)) throw new Error("linux type must be one of: " + types.join(", "));
+
+      installers.linux = {
+        url: installer.url,
+        type: installer.type,
+      };
+    }
 
     addPackage(
       {
-        name: name,
-        description: description,
-        version: version,
+        name,
+        description,
+        version,
       },
-      {
-        macos: {
-          url: "https://github.com/skyline-editor/skyline/releases/download/v0.1.0/Skyline_0.1.0_x64.dmg",
-          type: "dmg",
-        },
-        windows: {
-          url: "https://github.com/skyline-editor/skyline/releases/download/v0.1.0/Skyline_0.1.0_x64.msi",
-          type: "msi",
-        },
-      }
+      installers
     );
   }
 }
