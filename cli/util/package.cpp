@@ -11,6 +11,9 @@
 #include "../installers/macos/dmg/download.cpp"
 #include "../installers/macos/dmg/unpackage.cpp"
 
+#include "../installers/macos/pkg/download.cpp"
+#include "../installers/macos/pkg/unpackage.cpp"
+
 #include "../installers/windows/exe/download.cpp"
 #include "../installers/windows/exe/unpackage.cpp"
 
@@ -78,6 +81,7 @@ namespace Installer {
     try {
       if (isMacos) {
         if (install.type == "dmg") Macos::Dmg::download(package, install.url, progress);
+        if (install.type == "pkg") Macos::Pkg::download(package, install.url, progress);
         return true;
       }
       if (isWindows) {
@@ -110,6 +114,7 @@ namespace Installer {
       cout << endl;
       if (isMacos) {
         if (install.type == "dmg") Macos::Dmg::unpackage(package);
+        if (install.type == "pkg") Macos::Pkg::unpackage(package);
         return true;
       }
       if (isWindows) {
