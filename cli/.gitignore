@@ -1,3 +1,6 @@
 *.out
 *.exe
 *.obj
+
+installer.pkg
+output
