@@ -11,17 +11,17 @@ using namespace std;
 void error() {
   set_color(31);
   cerr << "Usage: bytecube [login | install | publish]" << endl;
-  set_color(0);
+  reset();
 }
 void error(string message) {
   set_color(31);
   cerr << "Usage: bytecube " << message << endl;
-  set_color(0);
+  reset();
 }
 
 int main(int argc, char** argv) {
-  set_color(0);
-  set_color(1);
+  reset();
+  set_bold(true);
   if (argc < 2) {
     error();
     return EINVAL;

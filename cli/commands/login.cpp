@@ -11,7 +11,7 @@ namespace Command {
         set_color(accent);
         cout << "John";
 
-        set_color(0);
+        reset();
         cout << "!" << endl;
       }
   };

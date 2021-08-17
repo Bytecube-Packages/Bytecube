@@ -19,18 +19,18 @@ namespace Command {
         set_color(accent);
         cout << package;
 
-        set_color(0);
+        reset();
         cout << "\"" << endl;
 
         // actually install the package
         if (!Installer::installPackage(package, display_progress)) exit(1);
 
-        set_color(0);
+        reset();
         set_color(accent);
         set_bold(true);
         cout << "Finished" << endl;
 
-        set_color(0);
+        reset();
       }
     private:
       static void display_progress(int procent) {
@@ -44,7 +44,7 @@ namespace Command {
         for (int i = 0; i < progress; i++) {
           cout << ".";
         }
-        set_color(0);
+        reset();
         for (int i = progress; i < width; i++) {
           cout << ".";
         }
