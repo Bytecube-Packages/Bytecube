@@ -139,6 +139,8 @@ InstallOption* getInstallOption(string url) {
     }
   }
 
+  if (type.length() > 3) type = "";
+
   InstallOption* option = new InstallOption;
   option->url = url;
   option->type = type;
