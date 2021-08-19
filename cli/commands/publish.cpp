@@ -19,7 +19,7 @@ namespace Command {
         set_color(accent);
         cout << package;
 
-        set_color(0);
+        reset();
         cout << "\"" << endl;
 
         string description = input("Description");
@@ -53,16 +53,16 @@ namespace Command {
 
         publishPackage(pkg);
 
-        set_color(0);
+        reset();
         set_color(accent);
         set_bold(true);
         cout << "Finished" << endl;
 
-        set_color(0);
+        reset();
       }
     private:
       static string input(string message) {
-        set_color(0);
+        reset();
         set_bold(true);
         cout << message;
         cout << " > ";
@@ -71,7 +71,7 @@ namespace Command {
         set_color(accent);
 
         getline(cin, value);
-        set_color(0);
+        reset();
         return value;
       }
   };

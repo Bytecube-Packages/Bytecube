@@ -106,7 +106,7 @@ namespace Installer {
       set_bold(true);
       cerr << error << endl;
 
-      set_color(0);
+      reset();
       return false;
     }
 
@@ -193,7 +193,7 @@ void publishPackage(Json package) {
     set_bold(true);
     set_color(31);
     cerr << "Error: " << jsonResult.getMap()["error"].getValue("No Error") << endl;
-    set_color(0);
+    reset();
 
     exit(1);
   }
