@@ -87,7 +87,7 @@ namespace Util {
         if (str[0] == '[') {
           json.type = "array";
           int last = 1;
-          for (int i = 1; i < str.size(); i++) {
+          for (int i = 1; i < str.size() - 1; i++) {
             if (str[i] == '\\') {
               i++;
               continue;
@@ -112,7 +112,7 @@ namespace Util {
           string key = "";
 
           int last = 1;
-          for (int i = 1; i < str.size(); i++) {
+          for (int i = 1; i < str.size() - 1; i++) {
             if (str[i] == '\\') {
               i++;
               continue;
