@@ -17,15 +17,15 @@ namespace Installer {
   namespace Macos {
     namespace Pkg {
       #ifdef MACOS
-        void unpackage(string name) {
+        void unpackage(string name, bool keep) {
           cout << "Installing pkg..." << endl;
 
           string file = "/tmp/bytecube/" + name + "/installer.pkg";
           Util::Macos::Pkg::install(file.c_str());
-          Util::Macos::remove(name.c_str());
+          if (!keep) Util::Macos::remove(name.c_str());
         }
       #else
-        void unpackage(string name) {}
+        void unpackage(string name, bool keep) {}
       #endif
     }
   }

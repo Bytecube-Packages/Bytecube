@@ -8,7 +8,7 @@ using namespace std;
 namespace Command {
   class Install {
     public:
-      static void run(string package) {
+      static void run(string package, set<string> flags) {
         if (os == "unknown") {
           cout << "Unknown OS" << endl;
           return;
@@ -23,7 +23,7 @@ namespace Command {
         cout << "\"" << endl;
 
         // actually install the package
-        if (!Installer::installPackage(package, display_progress)) exit(1);
+        if (!Installer::installPackage(package, display_progress, flags.find("keep") != flags.end(), flags.find("download-only") != flags.end())) exit(1);
 
         set_color(0);
         set_color(accent);

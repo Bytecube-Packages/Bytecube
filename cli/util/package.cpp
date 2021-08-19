@@ -96,7 +96,7 @@ namespace Installer {
     }
   }
 
-  bool installPackage(string package, void (*progress)(int)) {
+  bool installPackage(string package, void (*progress)(int), bool keep, bool download_only) {
     package = url_encode(package);
     InstallOption install;
     try {
@@ -112,14 +112,15 @@ namespace Installer {
 
     if (fetchPackage(package, install, progress)) {
       cout << endl;
+      if (download_only) return true;
       if (isMacos) {
-        if (install.type == "dmg") Macos::Dmg::unpackage(package);
-        if (install.type == "pkg") Macos::Pkg::unpackage(package);
+        if (install.type == "dmg") Macos::Dmg::unpackage(package, keep);
+        if (install.type == "pkg") Macos::Pkg::unpackage(package, keep);
         return true;
       }
       if (isWindows) {
-        if (install.type == "exe") Windows::Exe::unpackage(package);
-        if (install.type == "msi") Windows::Msi::unpackage(package);
+        if (install.type == "exe") Windows::Exe::unpackage(package, keep);
+        if (install.type == "msi") Windows::Msi::unpackage(package, keep);
         return true;
       }
     }

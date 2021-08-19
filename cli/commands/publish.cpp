@@ -8,7 +8,7 @@ using namespace std;
 namespace Command {
   class Publish {
     public:
-      static void run(string package) {
+      static void run(string package, set<string> flags) {
         if (os == "unknown") {
           cout << "Unknown OS" << endl;
           return;

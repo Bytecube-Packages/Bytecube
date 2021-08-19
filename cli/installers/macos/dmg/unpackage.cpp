@@ -17,7 +17,7 @@ namespace Installer {
   namespace Macos {
     namespace Dmg {
       #ifdef MACOS
-        void unpackage(string name) {
+        void unpackage(string name, bool keep) {
           cout << "Unpacking dmg..." << endl;
 
           string file = "/tmp/bytecube/" + name + "/installer.dmg";
@@ -26,10 +26,10 @@ namespace Installer {
           Util::Macos::Dmg::detach(volume.c_str());
 
           Util::Macos::move(name.c_str());
-          Util::Macos::remove(name.c_str());
+          if (!keep) Util::Macos::remove(name.c_str());
         }
       #else
-        void unpackage(string name) {}
+        void unpackage(string name, bool keep) {}
       #endif
     }
   }
