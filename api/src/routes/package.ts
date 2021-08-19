@@ -245,7 +245,6 @@ class PackageController {
       if (!installer.url) throw new Error("No macos url");
       if (!installer.type) throw new Error("No macos type");
 
-      if (!installer.url.endsWith(installer.type)) throw new Error("macos url must end with macos type");
       if (!types.includes(installer.type)) throw new Error("macos type must be one of: " + types.join(", "));
 
       installers.macos = {
@@ -260,7 +259,6 @@ class PackageController {
       if (!installer.url) throw new Error("No windows url");
       if (!installer.type) throw new Error("No windows type");
 
-      if (!installer.url.endsWith(installer.type)) throw new Error("windows url must end with windows type");
       if (!types.includes(installer.type)) throw new Error("windows type must be one of: " + types.join(", "));
 
       installers.windows = {
@@ -275,7 +273,6 @@ class PackageController {
       if (!installer.url) throw new Error("No linux url");
       if (!installer.type) throw new Error("No linux type");
 
-      if (!installer.url.endsWith(installer.type)) throw new Error("linux url must end with linux type");
       if (!types.includes(installer.type)) throw new Error("linux type must be one of: " + types.join(", "));
 
       installers.linux = {
