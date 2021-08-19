@@ -11,11 +11,11 @@ namespace Util {
     namespace Dmg {
       string attach(const char* name) {
         string start = "hdiutil attach -nobrowse";
+        string command = start + " \"" + name + "\"";
 
-        string command = start + " " + name;
         string volume = exec(command.c_str());
 
-        string r = "\\/Volumes\\/(\\s?\\w+)*";
+        string r = "\\/Volumes\\/(.?\\w*)*";
         smatch m;
         regex_search(volume, m, regex(r));
         
@@ -31,8 +31,8 @@ namespace Util {
       }
 
       void detach(const char* name) {
-        string start = "hdiutil detach ";
-        string command = start + name;
+        string start = "hdiutil detach";
+        string command = start + " " + name;
 
         exec(command.c_str());
       }
