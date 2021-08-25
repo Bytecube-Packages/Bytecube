@@ -5,13 +5,13 @@ import styles from "../../../styles/packagePage.module.css";
 const testData = {
   id: "chrome",
   name: "Google Chrome",
-  description: 'Google Chrome is a web browser made by Google LLC',
-  logo: 'https://www.google.se/chrome/static/images/chrome-logo.svg',
+  description: "Google Chrome is a web browser made by Google LLC",
+  logo: "https://www.google.se/chrome/static/images/chrome-logo.svg",
 
   authour: {
-    username: 'google',
-    name: "Google LLC"
-  }
+    username: "google",
+    name: "Google LLC",
+  },
 };
 
 const About = () => {
@@ -33,7 +33,12 @@ const PackagePage = () => {
           <img className={`${styles.package__logo}`} src={testData.logo} />
           <div className={`${styles.package__text}`}>
             <h2 className={`${styles.package__name}`}>{testData.name}</h2>
-            <h3 className={`${styles.package__author}`}>by <span className={`${styles.author}`}>{testData.authour.name}</span></h3>
+            <h3 className={`${styles.package__author}`}>
+              by{" "}
+              <span className={`${styles.author}`}>
+                {testData.authour.name}
+              </span>
+            </h3>
           </div>
         </div>
         <button className={`${styles.package__install}`}>Install</button>

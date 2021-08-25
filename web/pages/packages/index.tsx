@@ -1,3 +1,4 @@
+import { Package } from "../../types/Package";
 import { useQuery } from "react-query";
 import axios from "axios";
 
@@ -12,7 +13,7 @@ const PackagesPage = () => {
   return (
     <div>
       {allPackagesData
-        ? allPackagesData.map((data) => {
+        ? allPackagesData.map((data: Package) => {
             //have to use "data" instead of "package" because package is a reserved keyword
             return (
               <div>
