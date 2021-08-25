@@ -1,11 +1,16 @@
+import { QueryClient, QueryClientProvider } from "react-query";
 import "../styles/global.css";
+
+const queryClient = new QueryClient();
 
 function App({ Component, pageProps }) {
   return (
     <>
-      <div>
-        <Component {...pageProps} />
-      </div>
+      <QueryClientProvider client={queryClient}>
+        <div>
+          <Component {...pageProps} />
+        </div>
+      </QueryClientProvider>
     </>
   );
 }
