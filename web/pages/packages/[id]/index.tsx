@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-import styles from "../../../styles/packagePage.module.css";
+import styles from "../../../styles/PackagePage.module.css";
 
 const testData = {
   id: "chrome",
