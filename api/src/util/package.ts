@@ -1,8 +1,9 @@
 import { Prisma } from "@prisma/client";
 import { Request } from "express";
 import { db, InstallOptions, PackageOptions } from "../db/Database";
+import { UserData } from "../types/Auth";
 
-export async function parseRequestPackage(request: Request) {
+export function parseRequestPackage(request: Request) {
   if (!request.body) throw new Error("No body");
   if (!request.body.info) throw new Error("No info");
 
@@ -91,7 +92,8 @@ export async function fetchPackage(name: string) {
 
 export async function addPackage(
   pkg: PackageOptions,
-  opts: InstallOptions
+  opts: InstallOptions,
+  user?: UserData,
 ): Promise<void> {
   const { name, description, version } = pkg;
 
@@ -121,6 +123,21 @@ export async function addPackage(
     };
   }
 
+  let author;
+  if (user) {
+    author = {
+      connectOrCreate: {
+        where: {
+          id: user.id,
+        },
+        create: {
+          id: user.id,
+          name: user.name,
+        },
+      },
+    }
+  }
+
   await db.package.create({
     data: {
       name,
@@ -129,6 +146,7 @@ export async function addPackage(
       install: {
         create: install,
       },
+      author,
     },
   });
 }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { METHOD, Route, RouteConfig } from "../types/Route";
-import { getToken, getUserdata } from "../types/Auth";
+import { getToken, getUserdata, UserData } from "../types/Auth";
 
 export default class implements Route {
   static get config(): RouteConfig {
@@ -9,7 +9,7 @@ export default class implements Route {
       path: "/me",
     };
   }
-  static async handler(request: Request, _response: Response): Promise<void> {
+  static async handler(request: Request, _response: Response): Promise<UserData> {
     const token = getToken(request);
     if (!token) throw new Error("Couldn't parse token");
     

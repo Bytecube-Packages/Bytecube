@@ -1,6 +1,11 @@
 import axios from "axios";
 import { Request } from "express";
 
+export interface UserData {
+  id: string;
+  name: string;
+};
+
 export function getToken(request: Request) {
   const token = request.headers.authorization;
   if (!token) throw new Error("No token provided");
@@ -29,6 +34,9 @@ export async function getUserdata(token: string) {
       }
     });
 
-    return data.data;
+    return {
+      id: data.data.sub,
+      name: data.data.name
+    } as UserData;
   } catch (_error) {}
 }

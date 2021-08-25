@@ -6,12 +6,12 @@ import glob from 'glob';
 function useRoute(route: typeof Route) {
   const response = async (req: Request, res: Response) => {
     try {
-        const original = await route.handler(req, res);
-        res.status(200).json(original);
+      const original = await route.handler(req, res);
+      res.status(200).json(original);
     } catch (e) {
-        res.status(500).json({
-            error: e.message
-        });
+      res.status(500).json({
+        error: e.message
+      });
     }
   };
 
