@@ -182,13 +182,13 @@ Json createPackage(PackageInfo info, InstallerOptions installers) {
   return Json(main);
 }
 
-void publishPackage(Json package) {
+void publishPackage(Json package, string access_token) {
   string json = package.stringify();
-  string cmd = "curl -s -k -H \"Content-Type: application/json\" -X POST -d \"" + escape(json) + "\" \"" + api + "/package/publish\" ";
-
+  string cmd = "curl -s -k -H \"Content-Type: application/json\" -H \"Authorization: Bearer " + access_token + "\" -X POST -d \"" + escape(json) + "\" \"" + api + "/package/publish\" 2>&1";
+ 
   string result = exec(cmd.c_str());
   Json jsonResult = Json::parse(result);
-
+  
   if (jsonResult.type == "object") {
     set_bold(true);
     set_color(31);

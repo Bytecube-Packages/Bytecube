@@ -2,6 +2,7 @@
 #include <string>
 #include <set>
 
+#include "../util/login.cpp"
 #include "../util/colors.cpp"
 #include "../util/package.cpp"
 using namespace std;
@@ -10,10 +11,9 @@ namespace Command {
   class Publish {
     public:
       static void run(string package, set<string> flags) {
-        if (os == "unknown") {
-          cout << "Unknown OS" << endl;
-          return;
-        }
+        string access_token = Util::Login::get_token();
+        string name = Util::Login::login(access_token);
+        Util::Login::print_name(name);
 
         cout << "Preparing \"";
 
@@ -52,7 +52,7 @@ namespace Command {
 
         Json pkg = createPackage(info, options);
 
-        publishPackage(pkg);
+        publishPackage(pkg, access_token);
 
         reset();
         set_color(accent);

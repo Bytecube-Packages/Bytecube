@@ -74,6 +74,11 @@ set<string> parseFlags(int argv, char** argc, int start) {
 
 
 int main(int argc, char** argv) {
+  if (os == "unknown") {
+    cout << "Unknown OS" << endl;
+    return EXIT_SUCCESS;
+  }
+
   reset();
   set_bold(true);
   if (argc < 2) {

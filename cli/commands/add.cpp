@@ -9,11 +9,6 @@ namespace Command {
   class Install {
     public:
       static void run(string package, set<string> flags) {
-        if (os == "unknown") {
-          cout << "Unknown OS" << endl;
-          return;
-        }
-
         cout << "Installing \"";
 
         set_color(accent);

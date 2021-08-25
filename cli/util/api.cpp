@@ -6,6 +6,6 @@
   std::string api = "https://api.bytecube.tk";
 #else
   #ifdef ENV_DEV
-    std::string api = "http://localhost:" + "3000";
+    std::string api = "http://localhost:4000";
   #endif
 #endif
