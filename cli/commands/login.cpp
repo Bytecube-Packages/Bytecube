@@ -16,7 +16,8 @@ namespace Command {
   class Login {
     public:
       static void run(set<string> flags) {
-        string access_token = input("Access Token");
+        cout << "Input the token found at https://bytecube.tk/token" << endl;
+        string access_token = input("Token");
         string name = login(access_token);
         print_name(name);
 
