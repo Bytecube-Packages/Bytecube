@@ -10,20 +10,21 @@ const PackagesPage = () => {
     return data;
   });
 
+  const packages = allPackagesData ?? [];
+
   return (
     <div>
-      {allPackagesData
-        ? allPackagesData.map((data: Package) => {
-            //have to use "data" instead of "package" because package is a reserved keyword
-            return (
-              <div>
-                <h1>{data.name}</h1>
-                <h1>{data.description}</h1>
-                <h1>{data.version}</h1>
-              </div>
-            );
-          })
-        : ""}
+      {
+        packages.map((data: Package) => {
+          return (
+            <div>
+              <h1>{data.name}</h1>
+              <h1>{data.description}</h1>
+              <h1>{data.version}</h1>
+            </div>
+          );
+        })
+      }
     </div>
   );
 };
