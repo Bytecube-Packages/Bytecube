@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const accessToken = data.data.access_token;
     
     res.setHeader('Set-Cookie', `access_token=${accessToken}; Path=/; Secure`);
-    res.redirect('/');
+    res.redirect('/token');
   } catch (error) {
     console.log(error.message);
     res.status(500).send('An Error Occurred');
