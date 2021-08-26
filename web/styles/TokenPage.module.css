@@ -26,12 +26,13 @@
   font-size: 45px;
   font-family: Inter;
 
-  width: 900px;
+  width: 1000px;
   height: 70px;
 
   background-color: #000;
   border-radius: 10px;
 
+  padding-left: 20px;
   margin-right: 60px;
 }
 .token__button {

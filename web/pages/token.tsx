@@ -1,10 +1,14 @@
+import axios from "axios";
 import React from "react";
 import styles from "../styles/TokenPage.module.css";
 
 const TokenPage = () => {
   const [token, setToken] = React.useState('');
 
-  function revealToken() {
+  function login() {
+    window.location.href = '/api/auth/login';
+  }
+  async function revealToken() {
     let name = "access_token=";
     let decodedCookie = decodeURIComponent(document.cookie);
 
@@ -14,7 +18,18 @@ const TokenPage = () => {
       if (end < 0) end = decodedCookie.length;
 
       let token = decodedCookie.substring(start, end);
-      setToken(token);
+      try {
+        await axios.get('https://api.bytecube.tk/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setToken(token);
+      } catch(_err) {
+        login();
+      }
+    } else {
+      login();
     }
   }
 
