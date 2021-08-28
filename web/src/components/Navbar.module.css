@@ -31,26 +31,26 @@
 
   margin-right: 40px;
 }
-.navlinks > * {
+.navlinks > a > h1 {
   margin-left: 20px;
   margin-right: 20px;
 
   color: #999999;
   cursor: pointer;
 }
-.navlinks > *:hover {
+.navlinks > a > h1:hover {
   color: #888888;
 }
-.navlinks > *:active {
+.navlinks > a > h1:active {
   color: #717171;
 }
 
-.navlinks > .navlinks_important {
+.navlinks > a > .navlinks_important {
   color: var(--accent);
 }
-.navlinks > .navlinks_important:hover {
+.navlinks > a > .navlinks_important:hover {
   color: var(--accent-hover);
 }
-.navlinks > .navlinks_important:active {
+.navlinks > a > .navlinks_important:active {
   color: var(--accent-select);
 }

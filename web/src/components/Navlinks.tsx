@@ -1,12 +1,29 @@
-import styles from "./Navbar.module.css";
+import styles from './Navbar.module.css';
+import Link from 'next/link';
 
 export const Navlinks = () => {
   return (
     <div className={`${styles.navlinks}`}>
-      <h1 className={`${styles.navlinks_important}`}>Packages</h1>
-      <h1>Docs</h1>
-      <h1>Blog</h1>
-      <h1>Login</h1>
+      <Link href="/packages">
+        <a>
+          <h1 className={`${styles.navlinks_important}`}>Packages</h1>
+        </a>
+      </Link>
+      <Link href="https://docs.bytecube.tk">
+        <a>
+          <h1>Docs</h1>
+        </a>
+      </Link>
+      <Link href="https://blog.bytecube.tk">
+        <a>
+          <h1>Blog</h1>
+        </a>
+      </Link>
+      <Link href="/api/auth/login">
+        <a>
+          <h1>Login</h1>
+        </a>
+      </Link>
     </div>
   );
 };

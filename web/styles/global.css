@@ -20,6 +20,10 @@
   --secondary: #42D0D9;
 }
 
+a {
+  text-decoration: none;
+}
+
 body {
   background-color: var(--primary-800);
   color: var(--text);
