@@ -1,0 +1,56 @@
+.navbar {
+  width: 100%;
+  height: 100px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.navbar__logo {
+  margin-left: 10px;
+
+  width: 80px;
+  height: 80px;
+}
+.navbar__right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+
+  margin-right: 10px;
+}
+
+
+.navlinks {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+
+  margin-right: 40px;
+}
+.navlinks > * {
+  margin-left: 20px;
+  margin-right: 20px;
+
+  color: #999999;
+  cursor: pointer;
+}
+.navlinks > *:hover {
+  color: #888888;
+}
+.navlinks > *:active {
+  color: #717171;
+}
+
+.navlinks > .navlinks_important {
+  color: var(--accent);
+}
+.navlinks > .navlinks_important:hover {
+  color: var(--accent-hover);
+}
+.navlinks > .navlinks_important:active {
+  color: var(--accent-select);
+}

@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import { Navbar } from "../src/components/Navbar";
 import styles from "../styles/TokenPage.module.css";
 
 const TokenPage = () => {
@@ -34,16 +35,19 @@ const TokenPage = () => {
   }
 
   return (
-    <div className={styles.token__wrapper}>
-      <h1 className={styles.token__title}>Token</h1>
-      <div className={styles.token__container}>
-        <div className={styles.token}>{token}</div>
-        <button
-          className={styles.token__button}
-          onClick={revealToken}
-        >Reveal Token</button>
+    <>
+      <Navbar />
+      <div className={styles.token__wrapper}>
+        <h1 className={styles.token__title}>Token</h1>
+        <div className={styles.token__container}>
+          <div className={styles.token}>{token}</div>
+          <button
+            className={styles.token__button}
+            onClick={revealToken}
+          >Reveal Token</button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

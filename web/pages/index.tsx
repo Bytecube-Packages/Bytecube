@@ -1,15 +1,11 @@
 import { NextPage } from "next";
-
+import React from "react";
+import { Navbar } from "../src/components/Navbar";
 import styles from "../styles/LandingPage.module.css";
 
 const IndexPage: NextPage = () => (
-  <div>
-    <div className={`${styles.navbar}`}>
-      <h1>Packages</h1>
-      <h1>Docs</h1>
-      <h1>Blog</h1>
-      <h1>Login</h1>
-    </div>
+  <>
+    <Navbar />
     <div className={`${styles.body}`}>
       <div className={`${styles.tag}`}>
         <div className={`${styles.tag__text}`}>Seamlessy</div>
@@ -19,7 +15,7 @@ const IndexPage: NextPage = () => (
         <div className={`${styles.tag__text}`}>software</div>
       </div>
     </div>
-  </div>
+  </>
 );
 
 export default IndexPage;
