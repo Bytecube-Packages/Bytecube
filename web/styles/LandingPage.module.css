@@ -29,6 +29,8 @@
   font-size: 25px;
 
   background-color: var(--accent);
+  color: var(--white);
+  cursor: pointer;
   
   border-radius: 8px;
   padding: 10px;
@@ -50,6 +52,12 @@
 }
 .landing__cli {
   margin-left: 200px;
+
+  width: 760px;
+  height: 570px;
+
+  border-radius: 10px;
+  background-color: #000;
 }
 
 .tag {
