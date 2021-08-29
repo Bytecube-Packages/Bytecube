@@ -8,7 +8,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang="us">
+      <Html lang="en">
         <Head>
           <title>Bytecube Packages</title>
           <meta
