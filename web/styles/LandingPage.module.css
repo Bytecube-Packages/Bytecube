@@ -9,8 +9,54 @@
   width: 100%;
 }
 
-.tag {
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.main__text {
+  font-family: Inter;
+  font-size: 25px;
+  line-height: 1.5;
+
+  width: 450px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.main__start {
+  font-family: Inter;
+  font-size: 25px;
+
+  background-color: var(--accent);
   
+  border-radius: 8px;
+  padding: 10px;
+  border: 0;
+  outline: 0;
+}
+.main__start:hover {
+  background-color: var(--accent-hover);
+}
+.main__start:active {
+  background-color: var(--accent-select);
+}
+
+.landing {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.landing__cli {
+  margin-left: 200px;
+}
+
+.tag {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 }
 .tag__text {
   font-size: 64px;

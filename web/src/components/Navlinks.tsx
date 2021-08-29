@@ -9,12 +9,14 @@ export const Navlinks = () => {
           <h1 className={`${styles.navlinks_important}`}>Packages</h1>
         </a>
       </Link>
-      <Link href="https://docs.bytecube.tk">
+      {/* TODO: Redirect to the github release for this project */}
+      <Link href="#">
         <a>
-          <h1>Docs</h1>
+          <h1>Download</h1>
         </a>
       </Link>
-      <Link href="https://blog.bytecube.tk">
+      {/* TODO: Redirect to the blog written about this project */}
+      <Link href="#">
         <a>
           <h1>Blog</h1>
         </a>
