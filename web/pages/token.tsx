@@ -41,6 +41,7 @@ const TokenPage = () => {
 
   async function copyToken() {
     navigator.clipboard.writeText(token);
+    setClipboardIsCopied(true);
   }
 
   return (
