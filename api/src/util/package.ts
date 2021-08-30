@@ -76,6 +76,7 @@ export async function fetchPackage(name: string) {
         name,
       },
       include: {
+        author: true,
         install: {
           include: {
             macos: true,

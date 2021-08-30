@@ -28,4 +28,8 @@ export interface Package {
   name: string;
   description: string;
   version: string;
+
+  author?: {
+    name: string;
+  }
 };

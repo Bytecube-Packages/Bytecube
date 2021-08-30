@@ -1,6 +1,6 @@
 import { METHOD, Route } from "../../types/Route";
 import { Request, Response } from "express";
-import { addPackage, fetchPackage, parseRequestPackage } from "../../util/package";
+import { fetchPackage } from "../../util/package";
 import { Package } from "../../db/Database";
 
 export default class implements Route {
@@ -17,10 +17,16 @@ export default class implements Route {
     const packageData = await fetchPackage(packageID);
     if (!packageData) throw new Error(`Couldn't find package "${packageID}"`);
 
-    return {
+    const data = {
       name: packageData.name,
       description: packageData.description,
       version: packageData.version,
+    } as Package;
+
+    if (packageData.author) data.author = {
+      name: packageData.author?.name,  
     };
+
+    return data;
   }
 }
