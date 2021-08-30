@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import React from "react";
 import { Navbar } from "../src/components/Navbar/Navbar";
 import styles from "../styles/LandingPage.module.css";
+import Link from "next/link";
 
 const combine = (...classes) => classes.join(" ");
 const IndexPage: NextPage = () => {
@@ -21,7 +22,9 @@ const IndexPage: NextPage = () => {
             <div className={styles.main__text}>
               Install Bytecube today and make installing software so much easier and make creating and publishing software a lot easier too.
             </div>
-            <button className={styles.main__start}>Get Started</button>
+            <Link href="https://github.com/Bytecube-Packages/Bytecube/releases/tag/v1.0.0">
+              <a className={styles.main__start}>Get Started</a>
+            </Link>
           </div>
           <img className={styles.landing__cli} src="/cli.svg" alt="CLI" />
         </div>
