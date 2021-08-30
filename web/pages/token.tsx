@@ -29,6 +29,7 @@ const TokenPage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+
         setToken(token);
         setTokenIsShowing(true);
       } catch (_err) {
@@ -39,11 +40,11 @@ const TokenPage = () => {
     }
   }
 
-  async function copyToken() {
-    navigator.clipboard.writeText(token);
+  async function copyToken(token: string) {
+    revealToken();
+    navigator.clipboard.writeText(token ? token : "");
 
     setClipboardIsCopied(true);
-    revealToken();
   }
 
   return (
@@ -59,7 +60,7 @@ const TokenPage = () => {
           </button>
           <button className={styles.token__copybutton}>
             {!clipboardIsCopied ? (
-              <HiClipboardCopy size={50} onClick={() => copyToken()} />
+              <HiClipboardCopy size={50} onClick={() => copyToken(token)} />
             ) : (
               "Copied!"
             )}
