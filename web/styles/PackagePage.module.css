@@ -1,7 +1,15 @@
 .package {
-  padding: 0 200px;
+  padding: 200px;
   box-sizing: border-box;
 
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.package__header {
   width: 100%;
   height: 150px;
 
@@ -47,9 +55,24 @@
   height: 70px;
 
   border-radius: 10px;
+  cursor: pointer;
   background-color: var(--accent);
   border: 0;
   outline: 0;
+}
+.package__description {
+  font-size: 40px;
+  width: 100%;
+
+  margin-top: 40px;
+  border-top: 1px solid #999999;
+  padding-top: 40px;
+}
+.package__install:hover {
+  background-color: var(--accent-hover);
+}
+.package__install:active {
+  background-color: var(--accent-select);
 }
 
 .author {

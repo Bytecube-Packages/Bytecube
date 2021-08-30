@@ -1,23 +1,74 @@
+import axios from "axios";
 import { useRouter } from "next/router";
+import { useQuery } from "react-query";
+import QueryString from "qs";
 
 import styles from "../../../styles/PackagePage.module.css";
 
-const testData = {
-  id: "chrome",
-  name: "Google Chrome",
-  description: "Google Chrome is a web browser made by Google LLC",
-  logo: "https://www.google.se/chrome/static/images/chrome-logo.svg",
 
-  authour: {
-    username: "google",
-    name: "Google LLC",
-  },
-};
+async function installPackage(id: string) {
+  let os;
+  if (navigator.appVersion.indexOf("Win") >= 0) os = "windows";
+  if (navigator.appVersion.indexOf("Mac") >= 0) os = "macos";
 
-const About = () => {
+  if (!os) {
+    alert("Sorry, this browser is not supported.");
+    return;
+  }
+
+  const params = QueryString.stringify({
+    package: id,
+    platform: os,
+  });
+  const { data } = await axios.get(`https://api.bytecube.tk/package/install?${params}`);
+  const { url } = data;
+
+  window.location.href = url;
+}
+
+const Package: React.FC<{ id: string }> = ({ id }) => {
+  const { data: packageData } = useQuery("packageData", async () => {
+    const params = QueryString.stringify({
+      package: id
+    });
+
+    const { data } = await axios.get(`https://api.bytecube.tk/package/meta?${params}`);
+    return data;
+  });
+
+  if (!packageData) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div>
-      <p>{testData.description}</p>
+    <div className={`${styles.package}`}>
+      <div className={`${styles.package__header}`}>
+        <div className={`${styles.package__info}`}>
+          <img className={`${styles.package__logo}`} src={null} />
+          <div className={`${styles.package__text}`}>
+            <h2 className={`${styles.package__name}`}>{packageData.name}</h2>
+            {
+              packageData.author &&
+              <h3 className={`${styles.package__author}`}>
+                by{" "}
+                <span className={`${styles.author}`}>
+                  {packageData.author.name}
+                </span>
+              </h3>
+            }
+          </div>
+        </div>
+        <button
+          className={`${styles.package__install}`}
+          onClick={() => {
+            console.log("Install package");
+            installPackage(id);
+          }}
+        >Install</button>
+      </div>
+      <div className={`${styles.package__description}`}>
+        <p>{packageData.description}</p>
+      </div>
     </div>
   );
 };
@@ -26,30 +77,12 @@ const PackagePage = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  if (!id) {
+    return <div>Loading...</div>
+  }
+
   return (
-    <div>
-      <div className={`${styles.package}`}>
-        <div className={`${styles.package__info}`}>
-          <img className={`${styles.package__logo}`} src={testData.logo} />
-          <div className={`${styles.package__text}`}>
-            <h2 className={`${styles.package__name}`}>{testData.name}</h2>
-            <h3 className={`${styles.package__author}`}>
-              by{" "}
-              <span className={`${styles.author}`}>
-                {testData.authour.name}
-              </span>
-            </h3>
-          </div>
-        </div>
-        <button className={`${styles.package__install}`}>Install</button>
-      </div>
-      <div>
-        <div>About</div>
-        <div>Blog</div>
-        <div>Versions</div>
-      </div>
-      <About />
-    </div>
+    <Package id={id as string} />
   );
 };
 
