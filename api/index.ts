@@ -8,9 +8,10 @@ function useRoute(route: typeof Route) {
     try {
       const original = await route.handler(req, res);
       res.status(200).json(original);
-    } catch (e) {
+    } catch (e: any) {
+      const msg = e.message ?? e;
       res.status(500).json({
-        error: e.message
+        error: msg ?? 'Internal Server Error'
       });
     }
   };
