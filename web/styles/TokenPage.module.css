@@ -37,18 +37,35 @@
 }
 .token__button {
   font-family: Inter;
-  font-size: 45px;
+  font-size: 30px;
 
-  background: #3FB4BB;
+  background: #3fb4bb;
   border-radius: 10px;
 
   border: 0;
   outline: 0;
 
   cursor: pointer;
-  width: 360px;
+  width: 210px;
   height: 70px;
 }
-.token__button:hover {
-  background: #2FA4AB;
+
+.token__button:hover,
+.token__copybutton:hover {
+  background: #2fa4ab;
+}
+
+.token__copybutton {
+  font-family: Inter;
+  font-size: 30px;
+
+  background: #3fb4bb;
+  border-radius: 10px;
+
+  border: 0;
+  outline: 0;
+  height: 70px;
+
+  cursor: pointer;
+  margin-left: 20px;
 }

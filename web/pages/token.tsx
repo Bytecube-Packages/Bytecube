@@ -1,14 +1,18 @@
 import axios from "axios";
 import React from "react";
+import { HiClipboardCopy } from "react-icons/hi";
 import { Navbar } from "../src/components/Navbar/Navbar";
 import styles from "../styles/TokenPage.module.css";
 
 const TokenPage = () => {
-  const [token, setToken] = React.useState('');
+  const [token, setToken] = React.useState("");
+  const [tokenIsShowing, setTokenIsShowing] = React.useState(false);
+  const [clipboardIsCopied, setClipboardIsCopied] = React.useState(false);
 
   function login() {
-    window.location.href = '/api/auth/login';
+    window.location.href = "/api/auth/login";
   }
+
   async function revealToken() {
     let name = "access_token=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -20,18 +24,23 @@ const TokenPage = () => {
 
       let token = decodedCookie.substring(start, end);
       try {
-        await axios.get('https://api.bytecube.tk/me', {
+        await axios.get("https://api.bytecube.tk/me", {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         setToken(token);
-      } catch(_err) {
+        setTokenIsShowing(true);
+      } catch (_err) {
         login();
       }
     } else {
       login();
     }
+  }
+
+  async function copyToken() {
+    navigator.clipboard.writeText(token);
   }
 
   return (
@@ -41,10 +50,17 @@ const TokenPage = () => {
         <h1 className={styles.token__title}>Token</h1>
         <div className={styles.token__container}>
           <div className={styles.token}>{token}</div>
-          <button
-            className={styles.token__button}
-            onClick={revealToken}
-          >Reveal Token</button>
+
+          <button className={styles.token__button} onClick={revealToken}>
+            {!tokenIsShowing ? "Reveal Token" : "Revealed"}
+          </button>
+          <button className={styles.token__copybutton}>
+            {!clipboardIsCopied ? (
+              <HiClipboardCopy size={50} onClick={() => copyToken()} />
+            ) : (
+              "Copied!"
+            )}
+          </button>
         </div>
       </div>
     </>
