@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import React from "react";
-import { Navbar } from "../src/components/Navbar";
+import { Navbar } from "../src/components/Navbar/Navbar";
 import styles from "../styles/LandingPage.module.css";
 
 const combine = (...classes) => classes.join(" ");

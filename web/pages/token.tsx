@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { Navbar } from "../src/components/Navbar";
+import { Navbar } from "../src/components/Navbar/Navbar";
 import styles from "../styles/TokenPage.module.css";
 
 const TokenPage = () => {

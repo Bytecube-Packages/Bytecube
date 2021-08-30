@@ -10,7 +10,7 @@ export const Navlinks = () => {
         </a>
       </Link>
       {/* TODO: Redirect to the github release for this project */}
-      <Link href="#">
+      <Link href="https://github.com/Bytecube-Packages/Bytecube/releases/tag/v1.0.0">
         <a>
           <h1>Download</h1>
         </a>

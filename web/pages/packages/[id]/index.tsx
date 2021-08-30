@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import QueryString from "qs";
 
 import styles from "../../../styles/PackagePage.module.css";
+import React, { useEffect } from "react";
 
 
 async function installPackage(id: string) {
@@ -11,22 +12,29 @@ async function installPackage(id: string) {
   if (navigator.appVersion.indexOf("Win") >= 0) os = "windows";
   if (navigator.appVersion.indexOf("Mac") >= 0) os = "macos";
 
-  if (!os) {
-    alert("Sorry, this browser is not supported.");
-    return;
-  }
+  if (!os) return;
 
   const params = QueryString.stringify({
     package: id,
     platform: os,
   });
-  const { data } = await axios.get(`https://api.bytecube.tk/package/install?${params}`);
-  const { url } = data;
 
-  window.location.href = url;
+  try {
+    const { data } = await axios.get(`https://api.bytecube.tk/package/install?${params}`);
+    const { url } = data;
+
+    return url
+  } catch (e) {
+    return;
+  }
 }
 
 const Package: React.FC<{ id: string }> = ({ id }) => {
+  const [downloadUrl, setDownloadUrl] = React.useState<string | null>(null);
+  useEffect(() => {
+    installPackage(id).then(setDownloadUrl);
+  }, []);
+
   const { data: packageData } = useQuery("packageData", async () => {
     const params = QueryString.stringify({
       package: id
@@ -41,17 +49,17 @@ const Package: React.FC<{ id: string }> = ({ id }) => {
   }
 
   return (
-    <div className={`${styles.package}`}>
-      <div className={`${styles.package__header}`}>
-        <div className={`${styles.package__info}`}>
-          <img className={`${styles.package__logo}`} src={null} />
-          <div className={`${styles.package__text}`}>
-            <h2 className={`${styles.package__name}`}>{packageData.name}</h2>
+    <div className={styles.package}>
+      <div className={styles.package__header}>
+        <div className={styles.package__info}>
+          <img className={styles.package__logo} src={null} />
+          <div className={styles.package__text}>
+            <h2 className={styles.package__name}>{packageData.name}</h2>
             {
               packageData.author &&
-              <h3 className={`${styles.package__author}`}>
+              <h3 className={styles.package__author}>
                 by{" "}
-                <span className={`${styles.author}`}>
+                <span className={styles.author}>
                   {packageData.author.name}
                 </span>
               </h3>
@@ -59,14 +67,13 @@ const Package: React.FC<{ id: string }> = ({ id }) => {
           </div>
         </div>
         <button
-          className={`${styles.package__install}`}
+          className={[styles.package__install, ...(downloadUrl ? [] : [styles.package_disabled])].join(" ")}
           onClick={() => {
-            console.log("Install package");
-            installPackage(id);
+            if (downloadUrl) window.location.href = downloadUrl;
           }}
         >Install</button>
       </div>
-      <div className={`${styles.package__description}`}>
+      <div className={styles.package__description}>
         <p>{packageData.description}</p>
       </div>
     </div>

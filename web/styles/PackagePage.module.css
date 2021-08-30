@@ -60,6 +60,9 @@
   border: 0;
   outline: 0;
 }
+.package_disabled {
+  background-color: var(--disabled) !important;
+}
 .package__description {
   font-size: 40px;
   width: 100%;

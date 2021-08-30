@@ -1,5 +1,8 @@
 import { Package } from "../../types/Package";
+import { PackageCard } from "../../src/components/PackageCard/PackageCard"
+import styles from '../../styles/AllPackages.module.css'
 import { useQuery } from "react-query";
+import { useRouter } from 'next/router'
 import axios from "axios";
 import Link from "next/link";
 
@@ -12,15 +15,11 @@ const PackagesPage = () => {
   const packages = allPackagesData ?? [];
 
   return (
-    <div>
+    <div className={styles.container}>
       {
         packages.map((data: Package) => {
           return (
-            <div>
-              <Link href={`/packages/${data.name}`}>
-                <a>{data.name}</a>
-              </Link>
-            </div>
+            <PackageCard name={data.name} description={data.description} version={data.version} />
           );
         })
       }

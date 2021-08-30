@@ -18,6 +18,8 @@
   --accent-hover: #2FA4AB;
   --accent-select: #2198A4;
   --secondary: #42D0D9;
+
+  --disabled: #777777;
 }
 
 a {
