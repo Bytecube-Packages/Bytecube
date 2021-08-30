@@ -16,7 +16,7 @@ export const Navlinks = () => {
         </a>
       </Link>
       {/* TODO: Redirect to the blog written about this project */}
-      <Link href="#">
+      <Link href="https://blog.firecraftgaming.com/introducing-bytecube-cross-platform-package-manager">
         <a>
           <h1>Blog</h1>
         </a>
