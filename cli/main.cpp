@@ -7,13 +7,15 @@
 #include "./commands/login.cpp"
 #include "./commands/add.cpp"
 #include "./commands/publish.cpp"
+#include "./commands/help.cpp"
+
 using namespace std;
 
 void error() {
-  set_color(31);
-  cerr << "Usage: bytecube [login | install | publish]" << endl;
+  Command::Help::run();
   reset();
 }
+
 void error(string message) {
   set_color(31);
   cerr << "Usage: bytecube " << message << endl;
@@ -96,6 +98,10 @@ int main(int argc, char** argv) {
     }
     
     Command::Install::run(argv[2], parseFlags(argc, argv, 3));
+    return EXIT_SUCCESS;
+  }
+  if (strcmp(argv[1], "--help") == 0) {
+    Command::Help::run();
     return EXIT_SUCCESS;
   }
   if (strcmp(argv[1], "publish") == 0) {
