@@ -1,5 +1,5 @@
-import styles from './Navbar.module.css';
-import Link from 'next/link';
+import styles from "./Navbar.module.css";
+import Link from "next/link";
 
 export const Navlinks = () => {
   return (
@@ -10,17 +10,17 @@ export const Navlinks = () => {
         </a>
       </Link>
       {/* TODO: Redirect to the github release for this project */}
-      <Link href="https://github.com/Bytecube-Packages/Bytecube/releases/tag/v1.0.0">
+      <Link href="/download">
         <a>
           <h1>Download</h1>
         </a>
       </Link>
       {/* TODO: Redirect to the blog written about this project */}
-      <Link href="https://blog.firecraftgaming.com/introducing-bytecube-cross-platform-package-manager">
+      {/* <Link href="https://blog.firecraftgaming.com/introducing-bytecube-cross-platform-package-manager">
         <a>
           <h1>Blog</h1>
         </a>
-      </Link>
+      </Link> */}
       <Link href="/api/auth/login">
         <a>
           <h1>Login</h1>

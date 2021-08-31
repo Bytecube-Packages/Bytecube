@@ -1,0 +1,36 @@
+.card {
+  padding: 10px 20px;
+
+  width: 500px;
+  height: 150px;
+  position: fixed;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.container {
+  display: flex;
+}
+
+.header {
+  font-size: 3rem;
+}
+
+.windows,
+.macos {
+  background-color: var(--accent);
+  border-radius: 20px;
+  padding: 20px 30px;
+}
+
+.windows:hover,
+.os:hover {
+  cursor: pointer;
+  background-color: #339ca1;
+}
+
+.macos {
+  margin-left: 30px;
+}
