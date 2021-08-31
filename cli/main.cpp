@@ -5,7 +5,7 @@
 #include "./util/colors.cpp"
 
 #include "./commands/login.cpp"
-#include "./commands/add.cpp"
+#include "./commands/install.cpp"
 #include "./commands/publish.cpp"
 #include "./commands/help.cpp"
 
