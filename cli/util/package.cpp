@@ -105,7 +105,7 @@ namespace Installer {
 
       cout << "Finished in " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds." << endl;
       reset();
-      
+
       return true;
     } catch (string error) {
       cerr << error << endl;

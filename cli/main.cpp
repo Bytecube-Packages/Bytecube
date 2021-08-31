@@ -8,6 +8,7 @@
 #include "./commands/install.cpp"
 #include "./commands/publish.cpp"
 #include "./commands/help.cpp"
+#include "./commands/list.cpp"
 
 using namespace std;
 
@@ -83,14 +84,22 @@ int main(int argc, char** argv) {
 
   reset();
   set_bold(true);
+
   if (argc < 2) {
     error();
     return EINVAL;
   }
+
+  if (strcmp(argv[1], "--help") == 0) {
+    Command::Help::run();
+    return EXIT_SUCCESS;
+  }
+
   if (strcmp(argv[1], "login") == 0) {
     Command::Login::run(parseFlags(argc, argv, 2));
     return EXIT_SUCCESS;
   }
+
   if (strcmp(argv[1], "install") == 0) {
     if (argc < 3) {
       error("install <package>");
@@ -100,10 +109,7 @@ int main(int argc, char** argv) {
     Command::Install::run(argv[2], parseFlags(argc, argv, 3));
     return EXIT_SUCCESS;
   }
-  if (strcmp(argv[1], "--help") == 0) {
-    Command::Help::run();
-    return EXIT_SUCCESS;
-  }
+
   if (strcmp(argv[1], "publish") == 0) {
     if (argc < 3) {
       error("publish <package>");
@@ -111,6 +117,11 @@ int main(int argc, char** argv) {
     }
     
     Command::Publish::run(argv[2], parseFlags(argc, argv, 3));
+    return EXIT_SUCCESS;
+  }
+
+  if (strcmp(argv[1], "list") == 0) {
+    Command::List::run();
     return EXIT_SUCCESS;
   }
 
