@@ -15,17 +15,17 @@ export default class implements Route {
 
     const url = process.env.AUTH0_DOMAIN;
     const query = QueryString.stringify({
-      grant_type: 'authorization_code',
+      grant_type: "authorization_code",
       client_id: process.env.AUTH0_CLIENT_ID,
       client_secret: process.env.AUTH0_CLIENT_SECRET,
       redirect_uri: process.env.AUTH0_REDIRECT_URI,
-      code
+      code,
     });
 
     const result = await axios.post(`${url}/oauth/token`, query, {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
     });
 
     const data = {

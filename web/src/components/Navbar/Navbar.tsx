@@ -1,10 +1,10 @@
-import React from 'react';
-import styles from './Navbar.module.css';
-import Link from 'next/link';
-import { Navlinks } from './Navlinks';
+import React from "react";
+import styles from "./Navbar.module.css";
+import Link from "next/link";
+import { Navlinks } from "./Navlinks";
 
 export const Navbar: React.FC<{ contents?: React.ReactFragment }> = ({
-  contents
+  contents,
 }) => (
   <div className={`${styles.navbar}`}>
     <Link href="/">

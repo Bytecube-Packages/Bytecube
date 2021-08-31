@@ -1,23 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 
 :root {
   --text: #fff;
 
-  --primary-100: #DEE3EA;
-  --primary-200: #B2BDCD;
-  --primary-300: #5D7290;
-  --primary-400: #4F617A;
-  --primary-500: #404F64;
-  --primary-600: #323D4D;
-  --primary-700: #242C37;
-  --primary-800: #151A21;
-  --primary-900: #0B0E11;
+  --primary-100: #dee3ea;
+  --primary-200: #b2bdcd;
+  --primary-300: #5d7290;
+  --primary-400: #4f617a;
+  --primary-500: #404f64;
+  --primary-600: #323d4d;
+  --primary-700: #242c37;
+  --primary-800: #151a21;
+  --primary-900: #0b0e11;
 
-  --accent: #3FB4BB;
-  --accent-hover: #2FA4AB;
-  --accent-select: #2198A4;
-  --secondary: #42D0D9;
+  --accent: #3fb4bb;
+  --accent-hover: #2fa4ab;
+  --accent-select: #2198a4;
+  --secondary: #42d0d9;
 
   --disabled: #777777;
 }

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { Server } from './src/server';
-import { Route } from './src/types/Route';
-import glob from 'glob';
+import { Server } from "./src/server";
+import { Route } from "./src/types/Route";
+import glob from "glob";
 
 function useRoute(route: typeof Route) {
   const response = async (req: Request, res: Response) => {
@@ -11,7 +11,7 @@ function useRoute(route: typeof Route) {
     } catch (e: any) {
       const msg = e.message ?? e;
       res.status(500).json({
-        error: msg ?? 'Internal Server Error'
+        error: msg ?? "Internal Server Error",
       });
     }
   };
@@ -19,9 +19,9 @@ function useRoute(route: typeof Route) {
   Server.instance.app[route.config.method](route.config.path, response);
 }
 
-glob('./src/routes/**/*.ts', (_err, files) => {
+glob("./src/routes/**/*.ts", (_err, files) => {
   files.forEach((file) => {
-    const route = require(file.replace('.ts', '')).default;
+    const route = require(file.replace(".ts", "")).default;
     useRoute(route);
   });
 });

@@ -1,17 +1,21 @@
-import React from 'react'
-import styles from './PackageCard.module.css'
-import Link from 'next/link'
+import React from "react";
+import styles from "./PackageCard.module.css";
+import Link from "next/link";
 
 interface PackageCardProps {
   name: string;
   description: string;
-  version: string
+  version: string;
 }
 
 //it works, now we just need to make it look better
 
-export const PackageCard: React.FC<PackageCardProps> = ({ name, description, version }) => {
-  return  (
+export const PackageCard: React.FC<PackageCardProps> = ({
+  name,
+  description,
+  version,
+}) => {
+  return (
     <Link href={`/packages/${name}`}>
       <a>
         <div className={styles.package}>
@@ -21,5 +25,5 @@ export const PackageCard: React.FC<PackageCardProps> = ({ name, description, ver
         </div>
       </a>
     </Link>
-  )
-}
+  );
+};

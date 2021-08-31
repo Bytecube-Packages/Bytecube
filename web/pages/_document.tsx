@@ -15,14 +15,8 @@ class MyDocument extends Document {
             name="description"
             content="Bytecube Packages is cross platform package manager."
           />
-          <meta
-            name="favicon"
-            content="/logo.png"
-          />
-          <meta
-            name="apple-touch-icon"
-            content="/logo.png"
-          />
+          <meta name="favicon" content="/logo.png" />
+          <meta name="apple-touch-icon" content="/logo.png" />
           <meta
             name="keywords"
             content="bytecube, bytecube packages, bytecube package, bytecube packages, package manager, cross platform, social platform, voting"

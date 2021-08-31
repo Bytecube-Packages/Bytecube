@@ -9,12 +9,15 @@ export default class implements Route {
       path: "/package/list",
     };
   }
-  static async handler(_request: Request, _response: Response): Promise<Package[]> {
+  static async handler(
+    _request: Request,
+    _response: Response
+  ): Promise<Package[]> {
     const packages = await db.package.findMany({
       where: {},
     });
 
-    return packages.map(v => ({
+    return packages.map((v) => ({
       name: v.name,
       description: v.description,
       version: v.version,

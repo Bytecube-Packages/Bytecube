@@ -20,9 +20,10 @@ const IndexPage: NextPage = () => {
               <div className={styles.tag__text}>software</div>
             </div>
             <div className={styles.main__text}>
-              Install Bytecube today and make installing software so much easier and make creating and publishing software a lot easier too.
+              Install Bytecube today and make installing software so much easier
+              and make creating and publishing software a lot easier too.
             </div>
-            <Link href="https://github.com/Bytecube-Packages/Bytecube/releases/tag/v1.0.0">
+            <Link href="/download">
               <a className={styles.main__start}>Get Started</a>
             </Link>
           </div>
@@ -30,7 +31,7 @@ const IndexPage: NextPage = () => {
         </div>
       </div>
     </>
-  )
+  );
 };
 
 export default IndexPage;

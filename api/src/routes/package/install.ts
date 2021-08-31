@@ -10,7 +10,10 @@ export default class implements Route {
       path: "/package/install",
     };
   }
-  static async handler(request: Request, _response: Response): Promise<Install> {
+  static async handler(
+    request: Request,
+    _response: Response
+  ): Promise<Install> {
     const packageID = request.query.package?.toString().toLowerCase();
     const platform = request.query.platform?.toString().toLowerCase();
 

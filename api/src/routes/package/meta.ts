@@ -10,7 +10,10 @@ export default class implements Route {
       path: "/package/meta",
     };
   }
-  static async handler(request: Request, _response: Response): Promise<Package> {
+  static async handler(
+    request: Request,
+    _response: Response
+  ): Promise<Package> {
     const packageID = request.query.package?.toString().toLowerCase();
     if (!packageID) throw new Error(`"package" is required`);
 
@@ -23,9 +26,10 @@ export default class implements Route {
       version: packageData.version,
     } as Package;
 
-    if (packageData.author) data.author = {
-      name: packageData.author?.name,  
-    };
+    if (packageData.author)
+      data.author = {
+        name: packageData.author?.name,
+      };
 
     return data;
   }

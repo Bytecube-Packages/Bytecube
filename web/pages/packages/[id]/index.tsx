@@ -6,7 +6,6 @@ import QueryString from "qs";
 import styles from "../../../styles/PackagePage.module.css";
 import React, { useEffect } from "react";
 
-
 async function installPackage(id: string) {
   let os;
   if (navigator.appVersion.indexOf("Win") >= 0) os = "windows";
@@ -20,10 +19,12 @@ async function installPackage(id: string) {
   });
 
   try {
-    const { data } = await axios.get(`https://api.bytecube.tk/package/install?${params}`);
+    const { data } = await axios.get(
+      `https://api.bytecube.tk/package/install?${params}`
+    );
     const { url } = data;
 
-    return url
+    return url;
   } catch (e) {
     return;
   }
@@ -37,10 +38,12 @@ const Package: React.FC<{ id: string }> = ({ id }) => {
 
   const { data: packageData } = useQuery("packageData", async () => {
     const params = QueryString.stringify({
-      package: id
+      package: id,
     });
 
-    const { data } = await axios.get(`https://api.bytecube.tk/package/meta?${params}`);
+    const { data } = await axios.get(
+      `https://api.bytecube.tk/package/meta?${params}`
+    );
     return data;
   });
 
@@ -55,23 +58,25 @@ const Package: React.FC<{ id: string }> = ({ id }) => {
           <img className={styles.package__logo} src={null} />
           <div className={styles.package__text}>
             <h2 className={styles.package__name}>{packageData.name}</h2>
-            {
-              packageData.author &&
+            {packageData.author && (
               <h3 className={styles.package__author}>
                 by{" "}
-                <span className={styles.author}>
-                  {packageData.author.name}
-                </span>
+                <span className={styles.author}>{packageData.author.name}</span>
               </h3>
-            }
+            )}
           </div>
         </div>
         <button
-          className={[styles.package__install, ...(downloadUrl ? [] : [styles.package_disabled])].join(" ")}
+          className={[
+            styles.package__install,
+            ...(downloadUrl ? [] : [styles.package_disabled]),
+          ].join(" ")}
           onClick={() => {
             if (downloadUrl) window.location.href = downloadUrl;
           }}
-        >Install</button>
+        >
+          Install
+        </button>
       </div>
       <div className={styles.package__description}>
         <p>{packageData.description}</p>
@@ -85,12 +90,10 @@ const PackagePage = () => {
   const { id } = router.query;
 
   if (!id) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
-  return (
-    <Package id={id as string} />
-  );
+  return <Package id={id as string} />;
 };
 
 export default PackagePage;

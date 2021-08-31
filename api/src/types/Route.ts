@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 
 export enum METHOD {
-  GET = 'get',
-  POST = 'post',
-  PUT = 'put',
-  PATCH = 'patch',
-  DELETE = 'delete'
+  GET = "get",
+  POST = "post",
+  PUT = "put",
+  PATCH = "patch",
+  DELETE = "delete",
 }
 
 export interface RouteConfig {

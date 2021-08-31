@@ -14,8 +14,8 @@ export default class implements Route {
     const query = QueryString.stringify({
       redirect_uri: process.env.AUTH0_REDIRECT_URI,
       client_id: process.env.AUTH0_CLIENT_ID,
-      response_type: 'code',
-      scope: 'openid profile',
+      response_type: "code",
+      scope: "openid profile",
     });
 
     response.redirect(`${url}/authorize?${query}`);

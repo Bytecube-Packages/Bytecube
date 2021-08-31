@@ -9,15 +9,15 @@ export interface PackageOptions {
 export interface InstallOptions {
   macos?: {
     url: string;
-    type: 'dmg' | 'app' | 'pkg' | 'zip' | 'sh';
+    type: "dmg" | "app" | "pkg" | "zip" | "sh";
   };
   windows?: {
     url: string;
-    type: 'msi' | 'exe' | 'zip' | 'sh';
+    type: "msi" | "exe" | "zip" | "sh";
   };
   linux?: {
     url: string;
-    type: 'deb' | 'zip' | 'sh'; 
+    type: "deb" | "zip" | "sh";
   };
 }
 export interface Install {
@@ -31,5 +31,5 @@ export interface Package {
 
   author?: {
     name: string;
-  }
-};
+  };
+}

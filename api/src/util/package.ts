@@ -23,7 +23,8 @@ export function parseRequestPackage(request: Request) {
     if (!installer.url) throw new Error("No macos url");
     if (!installer.type) throw new Error("No macos type");
 
-    if (!types.includes(installer.type)) throw new Error("macos type must be one of: " + types.join(", "));
+    if (!types.includes(installer.type))
+      throw new Error("macos type must be one of: " + types.join(", "));
 
     installers.macos = {
       url: installer.url,
@@ -37,7 +38,8 @@ export function parseRequestPackage(request: Request) {
     if (!installer.url) throw new Error("No windows url");
     if (!installer.type) throw new Error("No windows type");
 
-    if (!types.includes(installer.type)) throw new Error("windows type must be one of: " + types.join(", "));
+    if (!types.includes(installer.type))
+      throw new Error("windows type must be one of: " + types.join(", "));
 
     installers.windows = {
       url: installer.url,
@@ -51,7 +53,8 @@ export function parseRequestPackage(request: Request) {
     if (!installer.url) throw new Error("No linux url");
     if (!installer.type) throw new Error("No linux type");
 
-    if (!types.includes(installer.type)) throw new Error("linux type must be one of: " + types.join(", "));
+    if (!types.includes(installer.type))
+      throw new Error("linux type must be one of: " + types.join(", "));
 
     installers.linux = {
       url: installer.url,
@@ -86,7 +89,7 @@ export async function fetchPackage(name: string) {
         },
       },
     });
-  } catch(_) {}
+  } catch (_) {}
 
   return null;
 }
@@ -94,7 +97,7 @@ export async function fetchPackage(name: string) {
 export async function addPackage(
   pkg: PackageOptions,
   opts: InstallOptions,
-  user?: UserData,
+  user?: UserData
 ): Promise<void> {
   const { name, description, version } = pkg;
 
@@ -136,7 +139,7 @@ export async function addPackage(
           name: user.name,
         },
       },
-    }
+    };
   }
 
   await db.package.create({

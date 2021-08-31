@@ -4,7 +4,7 @@ import { Request } from "express";
 export interface UserData {
   id: string;
   name: string;
-};
+}
 
 export function getToken(request: Request) {
   const token = request.headers.authorization;
@@ -29,14 +29,14 @@ export async function getUserdata(token: string) {
     const url = process.env.AUTH0_DOMAIN;
     const data = await axios.get(`${url}/userinfo`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     });
 
     return {
       id: data.data.sub,
-      name: data.data.name
+      name: data.data.name,
     } as UserData;
   } catch (_error) {}
 }
