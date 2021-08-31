@@ -77,25 +77,41 @@ namespace Installer {
     };
   }
 
-  bool fetchPackage(string package, InstallOption install, void (*progress)(int)) {
+ bool fetchPackage(string package, InstallOption install, void (*progress)(int)) {
     try {
+      //represents start time
+      chrono::steady_clock::time_point start = chrono::steady_clock::now();
+      bool success = false;
       if (isMacos) {
         if (install.type == "dmg") Macos::Dmg::download(package, install.url, progress);
         if (install.type == "pkg") Macos::Pkg::download(package, install.url, progress);
-        return true;
+        success = true;
       }
       if (isWindows) {
         if (install.type == "exe") Windows::Exe::download(package, install.url, progress);
         if (install.type == "msi") Windows::Msi::download(package, install.url, progress);
-        return true;
+        success = true;
       }
-      return false;
+
+      //represents time after package is installed
+      chrono::steady_clock::time_point end = chrono::steady_clock::now();
+
+      if (!success) return false;
+
+      //calculate install time & display
+      cout << "" << endl; //new line
+      set_color(accent);
+      set_bold(true);
+
+      cout << "Finished in " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds." << endl;
+      reset();
+      
+      return true;
     } catch (string error) {
       cerr << error << endl;
       return false;
     }
   }
-
   bool installPackage(string package, void (*progress)(int), bool keep, bool download_only) {
     package = url_encode(package);
     InstallOption install;

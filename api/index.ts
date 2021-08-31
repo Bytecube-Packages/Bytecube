@@ -25,4 +25,5 @@ glob("./src/routes/**/*.ts", (_err, files) => {
     useRoute(route);
   });
 });
+
 Server.instance.start();

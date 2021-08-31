@@ -20,21 +20,14 @@ namespace Command {
         reset();
         cout << "\"" << endl;
 
-        //represents start time
-        chrono::steady_clock::time_point start = chrono::steady_clock::now();
+
         // actually install the package
         if (!Installer::installPackage(package, display_progress, flags.find("keep") != flags.end(), flags.find("download-only") != flags.end())) exit(1);
-
-        //represents time after package is installed
-        chrono::steady_clock::time_point end = chrono::steady_clock::now();
 
         reset();
         set_color(accent);
         set_bold(true);
               
-        //calculate install time & display
-        cout << "Finished in " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds." << endl;
-
         reset();
       }
     private:
